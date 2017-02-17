@@ -1,0 +1,31 @@
+{
+  "name": "meals",
+  "version": "1.0.0",
+  "description": "A meal planner",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/math-yew/meals.git"
+  },
+  "author": "Matt Mecham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/math-yew/meals/issues"
+  },
+  "homepage": "https://github.com/math-yew/meals#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "express-session": "^1.15.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^2.0.1",
+    "massive": "^2.6.0"
+  }
+}
