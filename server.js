@@ -30,7 +30,14 @@ db.create_ingredient(function (err, response) {
   console.log(response, err);
 });
 
+///////////////////////// API //////////////////////////
+
 app.get('/api/test', serverCtrl.myTest);
+app.get('/api/recipes', serverCtrl.getRecipes);
+app.get('/api/recipe/:id', serverCtrl.getRecipe);
+app.post('/api/recipes', serverCtrl.addRecipe);
+app.post('/api/ingredients', serverCtrl.addIngredients);
+
 
 
 var port = config.PORT;

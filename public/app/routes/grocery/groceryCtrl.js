@@ -1,4 +1,4 @@
 angular.module('meals')
-.controller('groceryCtrl', function () {
+.controller('groceryCtrl', function ($scope) {
 
 })

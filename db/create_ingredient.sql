@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS ingredient(
   ingred_id SERIAL PRIMARY KEY,
-  recipe_id INTEGER REFERENCES users(user_id),
-  name VARCHAR(60),
+  recipe_id INTEGER REFERENCES recipe(recipe_id),
   qty REAL,
-  measure VARCHAR(25)
+  measure VARCHAR(25),
+  name VARCHAR(60)
 )
