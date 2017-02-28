@@ -2,21 +2,26 @@ angular.module('meals')
 .component('allRecipes', {
     bindings: {
         eachRecipe: '=',
-        certainRecipe: '='
+        certainRecipe: '=',
+        mealList: '='
     },
     templateUrl:'./app/components/recipesTemp.html',
-    controller: function (mainService){
+    controller: function (mainService, $rootScope){
 
-      // this.getRecipe = function (id) {
-      //   this.message = "id is: " + id;
-      // }
-
-      this.getRecipe = function(id) {
+      var $scope = this;
+      $scope.getRecipe = function(id) {
         mainService.getRecipe(id)
         .then(function(response) {
           console.log('the response is: ', response);
-          // this.certainRecipe = response.data;
+          $rootScope.certainRecipe = response;
+          console.log('this.certainRecipe', $scope.certainRecipe);
         });
+      }
+
+      $scope.addToList = function(id, name) {
+        console.log('add clicked');
+        this.mealList = mainService.addToList(id, name);
+        $rootScope.mealList = this.mealList;
       }
 
     }

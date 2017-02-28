@@ -1,0 +1,26 @@
+<div class="edit-recipes">
+
+  <button type="button" ng-click="$ctrl.refreshIt()">test</button>
+  <input type="text" ng-model="$ctrl.newRecipe.name" placeholder="Recipe Name"><br>
+  <input type="text" ng-model="$ctrl.newRecipe.directions" placeholder="Directions"><br>
+  <input type="text" ng-model="$ctrl.newRecipe.rating" placeholder="Rating"><br>
+  <input type="text" ng-model="$ctrl.newRecipe.source" placeholder="Source"><br>
+{{$ctrl.ingredientsList}}...
+
+  <div ng-repeat="ingredients in $ctrl.ingredientsList" style="list-style-type:none">
+    <p><span ng-click="$ctrl.removeIngredient(ingredients)">x</span>{{ingredients[0]}} {{ingredients[1]}} {{ingredients[2]}}</p>
+  </div>
+............
+  <!-- <ul ng-repeat="ingrd in $ctrl.certainRecipe" style="list-style-type:none">
+    <li><p ng-click="$ctrl.removeIngredient(ingrd)">x</p><p>{{ingrd[0]}} {{ingrd[1]}} {{ingrd[2]}}</p></li>
+  </ul> -->
+
+  <form>
+    <input type="text" ng-model="$ctrl.ingredient.qty" placeholder="QTY">
+    <input type="text" ng-model="$ctrl.ingredient.measurement" placeholder="Measurement">
+    <input type="text" ng-model="$ctrl.ingredient.name" placeholder="Ingredient">
+    <button ng-click="$ctrl.addIngredient($ctrl.ingredient)">Add</button>
+  </form>
+  <button ng-click="$ctrl.submitRecipe($ctrl.newRecipe)" ng-hide="$ctrl.update">Submit</button>
+    <button ng-click="$ctrl.updateRecipe($ctrl.newRecipe)" ng-show="$ctrl.update">Update</button>
+</div>

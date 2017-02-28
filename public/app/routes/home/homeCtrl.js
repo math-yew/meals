@@ -1,6 +1,5 @@
 angular.module('meals')
-.controller('homeCtrl', function ($scope) {
+.controller('homeCtrl', function ($scope, mainService) {
 
-$scope.home = "home"
 
 })

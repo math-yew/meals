@@ -6,6 +6,10 @@
   </head>
   <body>
     <h1>Grocery View</h1>
+    {{groceryList}}
 
+    <div class="" ng-repeat="groceries in groceryList">
+      <p>{{groceries.qty}} {{groceries.measure}} {{groceries.name}}</p>
+    </div>
   </body>
 </html>

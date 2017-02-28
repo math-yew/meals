@@ -46,7 +46,21 @@ angular.module('meals')
 }])
 
 angular.module('meals')
-.service('mainService', ["$http", function ($http) {
+.service('mainService', ["$http", "$state", function ($http, $state) {
+
+  var self = this;
+
+  this.login = function () {
+    console.log('log in attemped');
+    return $http.get('/auth/me').then(function (response) {
+      console.log('auth0 in service: ', response);
+      self.userId = response.data.id;
+      self.userName = response.data._json.name;
+
+      return response;
+    });
+  }
+
 
   this.test = function () {
     return $http.get('/api/test');
@@ -56,20 +70,37 @@ angular.module('meals')
     return $http.get('/api/recipes');
   }
 
-  this.certainRecipe = "starting";
+
   this.getRecipe = function (id) {
-    // var recId = {};
-    // recId.id = id;
     console.log('get the recipe: ', id);
     return $http.get('/api/recipe/' + id)
     .then(function(response) {
-      this.certainRecipe = response;
-      // console.log('this.certainRecipe: ', this.certainRecipe);
-      return response.data[0];
+      return response.data;
     });
   }
+  // this.certainRecipe = "";
 
-console.log('this.certainRecipe: ', this.certainRecipe);
+  var mealList = [];
+  this.addToList = function (id, name) {
+    var arr = [];
+    arr.push(id);
+    arr.push(name);
+    mealList.push(arr);
+    console.log('mealList: ', mealList);
+    return mealList;
+  }
+
+  this.removeMeal = function (meal) {
+    console.log('removeMeal service: ', meal);
+    for (var i = 0; i < mealList.length; i++) {
+      console.log('forloop', mealList[i][0], meal[0]);
+      if(mealList[i][0] === meal[0] &&
+        mealList[i][1] === meal[1]){
+          mealList.splice(i,1);
+          break;
+        }
+    }
+  }
 
   var ingredients = [];
   this.addIngredient = function (ingredient) {
@@ -80,6 +111,31 @@ console.log('this.certainRecipe: ', this.certainRecipe);
     ingredients.push(ingredientArr);
     console.log('ingredients: ', ingredients);
   }
+
+  this.removeIngredient = function (ingredient) {
+    for (var i = 0; i < ingredients.length; i++) {
+      if(ingredients[i][0] === ingredient[0] &&
+        ingredients[i][1] === ingredient[1] &&
+        ingredients[i][2] === ingredient[2]){
+          ingredients.splice(i,1);
+          break;
+        }
+    }
+  }
+
+  this.refreshIngredients = function (ing) {
+    ingredients = [];
+    for (var i = 0; i < ing.length; i++) {
+      var ingredientArr = [];
+      ingredientArr.push(ing[i].qty);
+      ingredientArr.push(ing[i].measure);
+      ingredientArr.push(ing[i].name);
+      ingredients.push(ingredientArr);
+    }
+    console.log('refreshed ingredients: ', ingredients);
+    return ingredients;
+  }
+
   this.ingredients = ingredients;
 
   this.submitRecipe = function (newRecipe) {
@@ -89,10 +145,11 @@ console.log('this.certainRecipe: ', this.certainRecipe);
     console.log('newRecipe: ', newRecipe);
     return $http.post('/api/recipes', newRecipe)
     .then(function (res) {
+      console.log('res: ', res);
       ingr.recipeId = res.data[0].recipe_id;
       console.log('res: ', ingr);
       if(ingr.recipeId > 0){
-        $http.post('/api/ingredients', ingr);
+        $http.post('/api/ingredients/' + ingr.recipeId, ingr);
       }
       else {
         return res;
@@ -100,60 +157,278 @@ console.log('this.certainRecipe: ', this.certainRecipe);
     });
   }
 
+  this.updateRecipe = function (newRecipe) {
+    newRecipe.ingredients = ingredients;
+    console.log('newRecipe: ', newRecipe);
+    return $http.put('/api/recipe/' + newRecipe.recipe_id, newRecipe);
+  }
+
+  this.deleteRecipe = function (id) {
+    return $http.delete('/api/recipe/' + id)
+    .then(function(response) {
+      return response.data;
+    });
+  }
+  self.groceryList;
+  var groceryList = []
+  this.makeList = function () {
+    return $http.get('/api/gather/')
+    // return $http.get('/api/gather/', {mealList})
+    .then(function(response) {
+      console.log('gathered: ', response);
+      var tempArr = [];
+      for (var i = 0; i < mealList.length; i++) {
+        tempArr.push(mealList[i][0]);
+      }
+      console.log('TEST!!!!!', tempArr);
+      for (var i = 0; i < response.data.length; i++) {
+        for (var j = 0; j < tempArr.length; j++) {
+          if(tempArr[j] === response.data[i].recipe_id){
+            groceryList.push(response.data[i]);
+          }
+        }
+      }
+      self.groceryList = groceryList;
+      console.log('this.groceryList: ', self.groceryList);
+
+    }).then(function(response) {
+      $state.go('grocery');
+    });
+  }
 
 }])
 
 angular.module('meals')
-.component('allRecipes', {
+.component('editRecipe', {
     bindings: {
-        eachRecipe: '=',
-        certainRecipe: '='
+      certainRecipe: '=',
+      update: '@'
     },
-    templateUrl:'./app/components/recipesTemp.html',
-    controller: ["mainService", function (mainService){
+    templateUrl:'./app/components/editTemp.html',
+    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
 
-      // this.getRecipe = function (id) {
-      //   this.message = "id is: " + id;
-      // }
+      var $scope = this;
 
-      this.getRecipe = function(id) {
-        mainService.getRecipe(id)
-        .then(function(response) {
-          console.log('the response is: ', response);
-          // this.certainRecipe = response.data;
-        });
+      this.refreshIt = function () {
+        if(this.update==='true'){
+          console.log('update?');
+          this.newRecipe=$rootScope.certainRecipe[0];
+          this.ingredientsList=mainService.refreshIngredients($rootScope.certainRecipe);
+          // this.ingredientsList = mainService.ingredients;
+        }
       }
+
+      // this.ingredients = $rootScope.ingredients;
+
+      $rootScope.$watch('certainRecipe',function() {
+        console.log('watched');
+        $scope.refreshIt();
+      });
+
+      // mainService.$watch('ingredients', function (value) {
+      //   $scope.ingredientsList = value;
+      // });
+
+      this.submitRecipe = function(newRecipe) {
+            console.log("ctrl working - recipe");
+        mainService.submitRecipe(newRecipe).then(function (res) {
+          $scope.rec = res;
+        })
+      }
+
+      this.updateRecipe = function(newRecipe) {
+            console.log("ctrl working - recipe");
+        mainService.updateRecipe(newRecipe).then(function (response) {
+          console.log('updated response: ', response);
+        })
+      }
+
+      this.addIngredient = function (ingredient) {
+        mainService.addIngredient(ingredient);
+      }
+
+      this.ingredientsList = mainService.ingredients;
+
+      this.removeIngredient = function (ingredients) {
+        mainService.removeIngredient(ingredients);
+      }
+
+
 
     }]
 });
 
 angular.module('meals')
-.controller('groceryCtrl', ["$scope", function ($scope) {
+.component('mealPlan', {
+    bindings: {
+        mealList: '='
+    },
+    templateUrl:'./app/components/planTemp.html',
+    controller: ["mainService", "$rootScope", "$state", function (mainService, $rootScope, $state){
+
+      this.removeMeal = function (meal) {
+        console.log('removeMeal contrl: ', meal);
+        mainService.removeMeal(meal);
+      }
+
+
+    this.makeList = function (meals) {
+      console.log('make list controller: ', meals);
+      mainService.makeList(meals);
+      $state.go('grocery');
+    }
+  }]
+});
+
+angular.module('meals')
+.component('singleRecipe', {
+    bindings: {
+        certainRecipe: '='
+    },
+    templateUrl:'./app/components/recipe_Temp.html',
+    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
+
+      this.deleteRecipe = function(id) {
+        mainService.deleteRecipe(id)
+        .then(function(response) {
+          console.log('deleted?: ', response);
+        });
+      }
+    }]
+});
+
+angular.module('meals')
+.component('allRecipes', {
+    bindings: {
+        eachRecipe: '=',
+        certainRecipe: '=',
+        mealList: '='
+    },
+    templateUrl:'./app/components/recipesTemp.html',
+    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
+
+      var $scope = this;
+      $scope.getRecipe = function(id) {
+        mainService.getRecipe(id)
+        .then(function(response) {
+          console.log('the response is: ', response);
+          $rootScope.certainRecipe = response;
+          console.log('this.certainRecipe', $scope.certainRecipe);
+        });
+      }
+
+      $scope.addToList = function(id, name) {
+        console.log('add clicked');
+        this.mealList = mainService.addToList(id, name);
+        $rootScope.mealList = this.mealList;
+      }
+
+    }]
+});
+
+
+angular.module("meals").directive('recAni', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, elem, attrs) {
+      // elem.on('click', function () {
+      //   alert("alert works")
+      // });
+      var flipped = false;
+      $('.select-recipe').on('click', function () {
+        // $('.get').css('overflow':'hidden');
+        $('.get').css('border-radius','0 0 50% 50%');
+        $('.get').css({'transform':'rotateY(180deg) rotateZ(-10deg) skew(-10deg,-10deg)'});
+        $('.get').css('background-color','black');
+        flipped = true;
+      });
+
+
+      $('#go-back').on('click', function () {
+          console.log('if jquery');
+          $('.get').css({'transform':'rotateY(0deg) rotateZ(0deg) skew(0deg,0deg)'});
+          $('.get').css('background-color','blue');
+
+          flipped = false;
+      });
+
+
+      $('.meal-plan').on('click', function () {
+        console.log('clicked with jquery');
+        $('.meal-plan').css('background-color','red');
+      });
+
+    }
+  };
+});
+
+// setTimeout(function () {
+//   $('.book').on('click', function () {
+//     console.log('clicked with jquery');
+//     $('.asdf').css({'transform':'rotateY(0deg)'});
+//     $('.asdf').css('background-color','red');
+//     $('.page').css({'transform':'rotateY(90deg)'});
+//     $('.page').css('background-color','black');
+//   });
+//
+//   $('.meal-plan').on('click', function () {
+//     console.log('clicked with jquery');
+//     $('.meal-plan').css('background-color','red');
+//
+//   });
+//
+//
+// }
+// ,1000)
+
+angular.module('meals')
+.controller('groceryCtrl', ["$scope", "mainService", function ($scope, mainService) {
+
+$scope.groceryList = mainService.groceryList;
+
+// mainService.$watch("groceryList", function (value) {
+//   $scope.groceryList = value;
+// });
+
+console.log('$scope.groceryList: ', $scope.groceryList);
 
 }])
 
 angular.module('meals')
-.controller('homeCtrl', ["$scope", function ($scope) {
+.controller('homeCtrl', ["$scope", "mainService", function ($scope, mainService) {
 
-$scope.home = "home"
 
 }])
 
 angular.module('meals')
-.controller('recipesCtrl', ["$scope", "mainService", function ($scope, mainService) {
+.controller('welcomeCtrl', ["$scope", "mainService", "$state", function ($scope, mainService, $state) {
 
-  $scope.submitRecipe = function(newRecipe) {
-        console.log("ctrl working - recipe");
-    mainService.submitRecipe(newRecipe).then(function (res) {
-      $scope.rec = res;
-    })
+  $scope.login  = function () {
+    mainService.login().then(function (response) {
+      $scope.logInfo = response;
+      console.log('auth0 in ctrl: ', response);
+    }).then(function(response) {
+      $state.go('recipes');
+    });
   }
 
-  $scope.addIngredient = function (ingredient) {
-    mainService.addIngredient(ingredient);
-  }
+}])
 
-  $scope.ingredientsList = mainService.ingredients;
+angular.module('meals')
+.controller('recipesCtrl', ["$scope", "mainService", "$rootScope", function ($scope, mainService, $rootScope) {
+
+  $scope.userId = mainService.userId;
+  $scope.userName = mainService.userName;
+
+  $rootScope.$watch("certainRecipe", function (value) {
+    $scope.certainRecipe = value;
+  });
+  $rootScope.$watch("mealList", function (value) {
+    $scope.mealList = value;
+  });
+  // $rootScope.$watch("ingredients", function (value) {
+  //   $scope.ingredients = value;
+  // });
 
   $scope.getRecipes = function () {
     mainService.getRecipes()
@@ -163,10 +438,11 @@ angular.module('meals')
   }
 
   $scope.rec = "recipe working";
-  $scope.certainRecipe = mainService.certainRecipe;
-}])
 
-angular.module('meals')
-.controller('welcomeCtrl', ["$scope", function ($scope) {
+  $scope.mealList = mainService.mealList;
+
+
+
+
 
 }])

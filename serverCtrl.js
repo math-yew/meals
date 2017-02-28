@@ -29,7 +29,7 @@ module.exports = {
         console.error(err);
         return res.send(err);
       }
-      console.log('returned results: ', results);
+      console.log('get recipe fired', results);
       // if(results.length === 0){
       //   return res.status(404).send("Can't Find Recipe");
       // }
@@ -49,9 +49,10 @@ module.exports = {
   },
 
   addIngredients: function (req, res) {
-    console.log('req.body: ', req.body);
+    console.log('add ingredients initiated',req.body);
+    // console.log('req.body: ', req.body);
     for (var i = 0; i < req.body.ingredients.length; i++) {
-      db.add_ingredient([req.body.recipeId, req.body.ingredients[i][0], req.body.ingredients[i][1], req.body.ingredients[i][2]], function (err, results) {
+      db.add_ingredient([req.params.id, req.body.ingredients[i][0], req.body.ingredients[i][1], req.body.ingredients[i][2]], function (err, results) {
         if(err){
           console.error(err);
           return res.send(err);
@@ -59,6 +60,61 @@ module.exports = {
         return res.send(results);
       })
     }
+  },
+
+  deleteIngredients: function (req, res, next) {
+    console.log('delete initiated', req.params);
+    db.delete_ingredients([req.params.id], function (err, results) {
+      if(err){
+        console.error('err: ',err);
+        return res.send(err);
+      }
+      // return res.send(results);
+      next();
+    })
+  },
+
+  deleteRecipe: function (req, res, next) {
+    db.delete_recipe([req.params.id], function (err, results) {
+      if(err){
+        console.error('err: ',err);
+        return res.send(err);
+      }
+      return res.send(results);
+    })
+  },
+
+  changeRecipe: function (req, res, next) {
+    console.log('change initiated');
+    db.change_recipe([req.body.recipe_id, req.body.name, req.body.directions, req.body.rating, req.body.source], function (err, results) {
+      if(err){
+        console.error(err);
+        return res.send(err);
+      }
+      // return res.send(results);
+      next();
+    })
+  },
+
+
+  gather: function (req, res) {
+    // var arr = [];
+    // for (var i = 0; i < req.body.mealList.length; i++) {
+    //   var recId = req.body.mealList[i][0];
+    //   arr.push(recId);
+    // }
+    // console.log('arr: ', arr);
+    db.gather([], function (err, results) {
+         if(err){
+           console.error('err: ',err);
+           return res.send(err);
+         }
+           return res.send(results);
+       })
+  },
+
+  finished: function (req, res) {
+    return res.send(req);
   }
 
 }

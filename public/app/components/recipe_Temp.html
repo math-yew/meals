@@ -1,0 +1,33 @@
+
+<div class="search-recipes" style="border-style: solid;">
+  <button type="button" id="go-back" name="button">Go Back</button>
+  SINGLE RECIPE<br>
+  {{$ctrl.certainRecipe[0].recipe_id}}<br>
+  {{$ctrl.certainRecipe[0].name}}<br>
+  {{$ctrl.certainRecipe[0].directions}}<br>
+  {{$ctrl.certainRecipe[0].source}}<br>
+  {{$ctrl.certainRecipe[0].rating}}<br>
+ Ingredients from sing
+ <div class="" ng-repeat="ingredient in $ctrl.certainRecipe">
+   repeat this: {{ingredient.name}}
+ </div>
+ </div>
+
+ <div class="search-recipes" style="border-style: solid;">
+   <input type="text" ng-model="$ctrl.certainRecipe[0].recipe_id">
+   <input type="text" ng-model="$ctrl.certainRecipe[0].name">
+   <input type="text" ng-model="$ctrl.certainRecipe[0].directions">
+   <input type="text" ng-model="$ctrl.certainRecipe[0].recipe_id">
+   <input type="text" ng-model="$ctrl.certainRecipe[0].source">
+   <input type="text" ng-model="$ctrl.certainRecipe[0].rating"><br><br><br>
+
+  Ingredients
+  <div class="" ng-repeat="ingredient in $ctrl.certainRecipe">
+    <input type="text" ng-model="ingredient.name">
+  </div>
+
+  <button type="button" ng-click="$ctrl.deleteRecipe($ctrl.certainRecipe[0].recipe_id)">Delete Recipe</button>
+
+{{$ctrl.certainRecipe}}
+
+  </div>

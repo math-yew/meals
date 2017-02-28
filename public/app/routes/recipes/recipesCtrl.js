@@ -1,18 +1,18 @@
 angular.module('meals')
-.controller('recipesCtrl', function ($scope, mainService) {
+.controller('recipesCtrl', function ($scope, mainService, $rootScope) {
 
-  $scope.submitRecipe = function(newRecipe) {
-        console.log("ctrl working - recipe");
-    mainService.submitRecipe(newRecipe).then(function (res) {
-      $scope.rec = res;
-    })
-  }
+  $scope.userId = mainService.userId;
+  $scope.userName = mainService.userName;
 
-  $scope.addIngredient = function (ingredient) {
-    mainService.addIngredient(ingredient);
-  }
-
-  $scope.ingredientsList = mainService.ingredients;
+  $rootScope.$watch("certainRecipe", function (value) {
+    $scope.certainRecipe = value;
+  });
+  $rootScope.$watch("mealList", function (value) {
+    $scope.mealList = value;
+  });
+  // $rootScope.$watch("ingredients", function (value) {
+  //   $scope.ingredients = value;
+  // });
 
   $scope.getRecipes = function () {
     mainService.getRecipes()
@@ -22,5 +22,11 @@ angular.module('meals')
   }
 
   $scope.rec = "recipe working";
-  $scope.certainRecipe = mainService.certainRecipe;
+
+  $scope.mealList = mainService.mealList;
+
+
+
+
+
 })

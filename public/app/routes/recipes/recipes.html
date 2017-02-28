@@ -1,42 +1,25 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
+
     <h1>Recipe View</h1>
-    {{rec}}
-    {{newRecipe}}
-    <div class="">
-      <!-- <form class="" ng-submit="submitRecipe(newRecipe)" method="post"> -->
-      <input type="text" ng-model="newRecipe.name" placeholder="Recipe Name"><br>
-      <input type="text" ng-model="newRecipe.directions" placeholder="Directions"><br>
-      <input type="text" ng-model="newRecipe.rating" placeholder="Rating"><br>
-      <input type="text" ng-model="newRecipe.source" placeholder="Source"><br>
-
-      <ul ng-repeat="ingredients in ingredientsList">
-        <li><p>{{ingredients[0]}} {{ingredients[1]}} {{ingredients[2]}}</p></li>
-      </ul>
-      <form>
-        <input type="text" ng-model="ingredient.qty" placeholder="QTY">
-        <input type="text" ng-model="ingredient.measurement" placeholder="Measurement">
-        <input type="text" ng-model="ingredient.name" placeholder="Ingredient">
-        <button ng-click="addIngredient(ingredient)">Add</button>
-      </form>
-      <button ng-click="submitRecipe(newRecipe)">Submit</button>
-    </div>
-
-    <div>
-      <button ng-click="getRecipes()">Get Recipes</button>
-      <div ng-repeat="eachRecipe in allRecipes">
-        <!-- {{eachRecipe}} -->
-        <all-recipes each-recipe="eachRecipe" certain-recipe="certainRecipe"></all-recipes>
+    {{userId}}
+    {{userName}}
+    
+    <div class="book" rec-ani>
+      <div class="page get">
+        <button ng-click="getRecipes()">Get Recipes</button>
+        <div ng-repeat="eachRecipe in allRecipes">
+          <!-- {{eachRecipe}} -->
+          <all-recipes each-recipe="eachRecipe" certain-recipe="certainRecipe" get-recipe='getRecipe' meal-list="mealList"></all-recipes>
+        </div>
+      </div>
+      <div class="page">
+        <edit-recipe></edit-recipe>
       </div>
 
+      <div class="page">
+          <single-recipe certain-recipe="certainRecipe"></single-recipe>
+          <edit-recipe update="true"  certain-recipe="certainRecipe"></edit-recipe>
+      </div>
     </div>
-    <div class="">
-      {{certainRecipe}}
+    <div class="right-side" rec-ani>
+      <meal-plan meal-list="mealList"></meal-plan>
     </div>
-  </body>
-</html>

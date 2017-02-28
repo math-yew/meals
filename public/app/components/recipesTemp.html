@@ -1,12 +1,15 @@
-<div class="search-recipes" style="border-style: solid;" ng-click="$ctrl.getRecipe($ctrl.eachRecipe.recipe_id)">
-  {{$ctrl.message}}<br>
+<div class="search-recipes" style="border-style: solid;" >
+  <div class="select-recipe" ng-click="$ctrl.getRecipe($ctrl.eachRecipe.recipe_id)" rec-ani>
+
   {{$ctrl.eachRecipe.recipe_id}}<br>
   {{$ctrl.eachRecipe.name}}<br>
   {{$ctrl.eachRecipe.directions}}<br>
   {{$ctrl.eachRecipe.source}}<br>
   {{$ctrl.eachRecipe.rating}}<br>
-</div><br>
+  start{{$ctrl.certainRecipe[0].recipe_id}}end{{$ctrl.mealList}}
 
-  <div class="">
-    start{{certainRecipe}}end
   </div>
+
+  <button class="add-button" type="button" ng-click="$ctrl.addToList($ctrl.eachRecipe.recipe_id, $ctrl.eachRecipe.name)">Add</button>
+
+</div><br>
