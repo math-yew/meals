@@ -1,8 +1,7 @@
 
-    <h1>Recipe View</h1>
     {{userId}}
     {{userName}}
-    
+
     <div class="book" rec-ani>
       <div class="page get">
         <button ng-click="getRecipes()">Get Recipes</button>
@@ -11,15 +10,23 @@
           <all-recipes each-recipe="eachRecipe" certain-recipe="certainRecipe" get-recipe='getRecipe' meal-list="mealList"></all-recipes>
         </div>
       </div>
+
       <div class="page">
         <edit-recipe></edit-recipe>
       </div>
 
       <div class="page">
-          <single-recipe certain-recipe="certainRecipe"></single-recipe>
-          <edit-recipe update="true"  certain-recipe="certainRecipe"></edit-recipe>
+        <button type="button" name="button" ng-click="flipped = !flipped" ng-show="flipped">Edit</button>
+        <button type="button" name="button" ng-click="flipped = !flipped" ng-hide="flipped">Go Back</button>
+        <single-recipe certain-recipe="certainRecipe" ng-show="flipped"></single-recipe>
+        <edit-recipe update="true"  certain-recipe="certainRecipe" ng-hide="flipped"></edit-recipe>
       </div>
     </div>
+
     <div class="right-side" rec-ani>
       <meal-plan meal-list="mealList"></meal-plan>
+    </div>
+
+    <div class="triangle">
+      triange
     </div>

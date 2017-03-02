@@ -4,19 +4,22 @@ angular.module('meals')
   var self = this;
 
   this.login = function () {
+    var info = {};
     console.log('log in attemped');
     return $http.get('/auth/me').then(function (response) {
       console.log('auth0 in service: ', response);
-      self.userId = response.data.id;
-      self.userName = response.data._json.name;
-
+      self.userId = info.id =  response.data.id;
+      self.userName = info.name = response.data._json.name;
+      info.email = response.data._json.email;
       return response;
+    })
+    .then(function(response) {
+      console.log('info: ', info);
+      $http.post('/api/users', info)
+      .then(function(response) {
+        console.log('list of users: ', response);
+      });
     });
-  }
-
-
-  this.test = function () {
-    return $http.get('/api/test');
   }
 
   this.getRecipes = function () {
@@ -122,6 +125,7 @@ angular.module('meals')
       return response.data;
     });
   }
+
   self.groceryList;
   var groceryList = []
   this.makeList = function () {

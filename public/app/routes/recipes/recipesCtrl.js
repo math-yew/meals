@@ -1,6 +1,8 @@
 angular.module('meals')
 .controller('recipesCtrl', function ($scope, mainService, $rootScope) {
 
+  $scope.flipped = true;
+
   $scope.userId = mainService.userId;
   $scope.userName = mainService.userName;
 

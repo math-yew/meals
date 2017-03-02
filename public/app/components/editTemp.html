@@ -21,6 +21,7 @@
     <input type="text" ng-model="$ctrl.ingredient.name" placeholder="Ingredient">
     <button ng-click="$ctrl.addIngredient($ctrl.ingredient)">Add</button>
   </form>
-  <button ng-click="$ctrl.submitRecipe($ctrl.newRecipe)" ng-hide="$ctrl.update">Submit</button>
+  <button ng-click="$ctrl.submitRecipe( )" ng-hide="$ctrl.update">Submit</button>
     <button ng-click="$ctrl.updateRecipe($ctrl.newRecipe)" ng-show="$ctrl.update">Update</button>
+    <button type="button" ng-click="$ctrl.deleteRecipe($ctrl.certainRecipe[0].recipe_id)">Delete Recipe</button>
 </div>

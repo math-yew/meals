@@ -1,5 +1,34 @@
 $grey: grey
 
+@font-face
+  font-family: Muli
+  src: url("../app/css/fonts/muli/Muli-Light.ttf")
+
+@font-face
+  font-family: Ovo
+  src: url("../app/css/fonts/ovo/Ovo-Regular.ttf")
+  font-weight: bold
+
+@font-face
+  font-family: Cardo
+  src: url("../app/css/fonts/cardo/Cardo-Bold.ttf")
+
+@font-face
+  font-family: Josefinsans
+  src: url("../app/css/fonts/josefinsans/Josefinsans-Regular.ttf")
+
+body
+  margin: 0
+  font-family: Muli
+
+.input-style
+  font-family: Josefinsans
+  font-size: 30px
+  padding: 5px
+  border-radius: 5px
+
+button
+  @extend .input-style
 
 .basic
   padding: 5px
@@ -11,8 +40,8 @@ $grey: grey
 .book
   width: 70%
   position: relative
-  // background-color: yellow
   float: left
+  transition: 3s
 
 .flip
     transform-origin: left
@@ -28,9 +57,19 @@ $grey: grey
   position: absolute
   top: 20px
   left: 20px
-  background-color: blue
-  overflow: scroll
-  
+  // background-color: blue
+  border-style: solid
+  border-color: rgb(183,183,183)
+  border-left-color: rgb(150,150,150)
+  overflow-y: scroll
+  background: rgb(183,183,183)
+  background: -moz-linear-gradient(left, rgba(183,183,183,1) 0%, rgba(232,232,232,1) 7%, rgba(255,255,255,1) 29%, rgba(255,255,255,1) 66%, rgba(237,237,237,1) 100%)
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(183,183,183,1)), color-stop(7%,rgba(232,232,232,1)), color-stop(29%,rgba(255,255,255,1)), color-stop(66%,rgba(255,255,255,1)), color-stop(100%,rgba(237,237,237,1)))
+  background: -webkit-linear-gradient(left, rgba(183,183,183,1) 0%,rgba(232,232,232,1) 7%,rgba(255,255,255,1) 29%,rgba(255,255,255,1) 66%,rgba(237,237,237,1) 100%)
+  background: -o-linear-gradient(left, rgba(183,183,183,1) 0%,rgba(232,232,232,1) 7%,rgba(255,255,255,1) 29%,rgba(255,255,255,1) 66%,rgba(237,237,237,1) 100%)
+  background: -ms-linear-gradient(left, rgba(183,183,183,1) 0%,rgba(232,232,232,1) 7%,rgba(255,255,255,1) 29%,rgba(255,255,255,1) 66%,rgba(237,237,237,1) 100%)
+  background: linear-gradient(to right, rgba(183,183,183,1) 0%,rgba(232,232,232,1) 7%,rgba(255,255,255,1) 29%,rgba(255,255,255,1) 66%,rgba(237,237,237,1) 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7b7b7', endColorstr='#ededed',GradientType=1 )
 
 .get
   z-index: 10
@@ -62,6 +101,7 @@ $grey: grey
   float: right
   // background-color: green
   margin: 0 5% 0 0
+  transition: 1.5s
 
 .meal-plan
   @extend .basic
@@ -69,10 +109,77 @@ $grey: grey
   width: 100%
   background-color: lightblue
   border-style: solid
+  border-width: thin
   min-height: 100px
   border-radius: 3px
   position: relative
 
+
 .add-button
   z-index: 11
   float: right
+
+.welcome-screen
+  background-size: cover
+  width: 100%
+  height: 100vh
+  background-attachment: fixed
+  position: fixed
+  background-position: center
+
+.grass
+  @extend .welcome-screen
+  background: url("../app/css/images/grass.png") center center no-repeat
+  z-index: 1
+
+.blurred
+  @extend .welcome-screen
+  background: url("../app/css/images/blurred.png") center center no-repeat
+  z-index: 2
+
+.fridge
+  @extend .welcome-screen
+  background: url("../app/css/images/fridge.png") center center no-repeat
+  z-index: 3
+
+.counter
+  @extend .welcome-screen
+  background: url("../app/css/images/counter.png") center center no-repeat
+  z-index: 4
+
+.chandelier
+  @extend .welcome-screen
+  background: url("../app/css/images/chandelier.png") center center no-repeat
+  z-index: 5
+
+.home-top
+  @extend .welcome-screen
+  // background-color: black
+  // opacity: .5
+  z-index: 6
+
+.center
+  top: 50%
+  left: 50%
+  transform: translate(-50%,-50%)
+  text-align: center
+  position: absolute
+
+.title
+  font-family: Josefinsans
+  font-size: 125px
+  color: white
+  text-shadow: 2px 2px 4px #000000
+
+.triangle
+  position: fixed
+  top: 50%
+  transform: translateY(-50%)
+  right: 350px
+  border-top: 150px solid transparent
+  border-right: 100px solid red
+  border-bottom: 150px solid transparent
+  z-index: 20
+  width: 0px
+  height: 0px
+  transition: 2s

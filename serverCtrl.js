@@ -1,15 +1,35 @@
 var app = require('./server.js');
 var db = app.get('db');
+var userArr = [];
 module.exports = {
 
-  myTest: function (req, res) {
-    db.database_call([], function (err, results) {
+  getUsers: function (req, res, next) {
+    db.get_users([], function (err, results) {
       if(err){
         console.error(err);
         return res.send(err);
       }
-      return res.send(results);
+      for (var i = 0; i < results.length; i++) {
+        userArr.push(results[i].auth0_id);
+      }
+      console.log('userArr: ', userArr);
+      next();
     })
+  },
+
+  addUser: function (req, res) {
+    console.log('req.body.id: ', req.body.id);
+    if(userArr.indexOf(req.body.id) === -1){
+      db.add_user([req.body.name, req.body.email, req.body.id], function (err, results) {
+        if(err){
+          console.error(err);
+          return res.send(err);
+        }
+        console.log('new user added');
+        return res.send(results);
+      })
+    }
+        return res.send("Existing User");
   },
 
   getRecipes: function (req, res) {

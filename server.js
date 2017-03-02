@@ -67,7 +67,7 @@ return res.status(200).send(req.user);
 
 ///////////////////////// API //////////////////////////
 
-app.get('/api/test', serverCtrl.myTest);
+app.post('/api/users', serverCtrl.getUsers, serverCtrl.addUser);
 app.get('/api/recipes', serverCtrl.getRecipes);
 app.get('/api/recipe/:id', serverCtrl.getRecipe);
 app.post('/api/recipes', serverCtrl.addRecipe);

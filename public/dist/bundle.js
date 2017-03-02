@@ -39,10 +39,6 @@ angular.module('meals', ['ui.router'])
 angular.module('meals')
 .controller('ctrl', ["$scope", "mainService", function ($scope, mainService) {
 
-  mainService.test().then(function (res) {
-    $scope.test = res.data[0].value;
-  })
-
 }])
 
 angular.module('meals')
@@ -51,19 +47,22 @@ angular.module('meals')
   var self = this;
 
   this.login = function () {
+    var info = {};
     console.log('log in attemped');
     return $http.get('/auth/me').then(function (response) {
       console.log('auth0 in service: ', response);
-      self.userId = response.data.id;
-      self.userName = response.data._json.name;
-
+      self.userId = info.id =  response.data.id;
+      self.userName = info.name = response.data._json.name;
+      info.email = response.data._json.email;
       return response;
+    })
+    .then(function(response) {
+      console.log('info: ', info);
+      $http.post('/api/users', info)
+      .then(function(response) {
+        console.log('list of users: ', response);
+      });
     });
-  }
-
-
-  this.test = function () {
-    return $http.get('/api/test');
   }
 
   this.getRecipes = function () {
@@ -169,6 +168,7 @@ angular.module('meals')
       return response.data;
     });
   }
+
   self.groceryList;
   var groceryList = []
   this.makeList = function () {
@@ -327,6 +327,66 @@ angular.module('meals')
 });
 
 
+angular.module("meals").directive('homeAni', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, elem, attrs) {
+
+      $('.home-container').mousemove(function(event){
+        $("span").text(event.pageX + ", " + event.pageY);
+
+        $('.counter').css({
+          'transform':'translateX(' + (event.pageX-800) / 6.5 + 'px)'
+        });
+
+        $('.chandelier').css({
+          'transform':'translateX(' + (event.pageX-800) / 8.5 + 'px)'
+        });
+
+        $('.fridge').css({
+          'transform':'translateX(' + (event.pageX-800) / 10.5 + 'px)'
+        });
+
+        $('.grass').css({
+          'transform':'translateX(' + (event.pageX-800) / 11.5 + 'px)'
+        });
+
+        $('.blurred').css({
+          'transform':'translateX(' + (event.pageX-800) / 9.5 + 'px)'
+        });
+
+      });
+
+      // $(window).on('scroll', function() {
+      //   var magic = $(this).scrollTop();
+      //   console.log(magic);
+      //
+      //   var shooting = .1*Math.abs(500-magic);
+      //
+
+      //
+      //   $('.headline').css({
+      //   'transform': 'translate(+' + magic / 8 + '%) rotateY('+magic+'deg)'
+      //   });
+      // });
+
+
+
+
+
+      $('.center').on('click', function () {
+        console.log('clicked with jquery');
+        $('.center').css('background-color','red');
+      });
+
+
+
+
+    }
+  };
+});
+
+
 angular.module("meals").directive('recAni', function() {
   return {
     restrict: 'A',
@@ -336,26 +396,31 @@ angular.module("meals").directive('recAni', function() {
       // });
       var flipped = false;
       $('.select-recipe').on('click', function () {
-        // $('.get').css('overflow':'hidden');
-        $('.get').css('border-radius','0 0 50% 50%');
-        $('.get').css({'transform':'rotateY(180deg) rotateZ(-10deg) skew(-10deg,-10deg)'});
+        $('.get').css({'transform':'rotateY(180deg) rotateZ(-15deg) skew(-15deg,-15deg)'});
         $('.get').css('background-color','black');
+        $('.select-recipe').hide();
         flipped = true;
       });
 
-
       $('#go-back').on('click', function () {
-          console.log('if jquery');
           $('.get').css({'transform':'rotateY(0deg) rotateZ(0deg) skew(0deg,0deg)'});
           $('.get').css('background-color','blue');
-
+          $('.select-recipe').show();
           flipped = false;
       });
-
 
       $('.meal-plan').on('click', function () {
         console.log('clicked with jquery');
         $('.meal-plan').css('background-color','red');
+      });
+
+      var moveLeft = 300;
+      var triMove = moveLeft-50;
+
+      $('.triangle').on('click', function () {
+        $('.triangle').css({'transform':'rotateZ(180deg) translateY(100px) translateX('+triMove+'px)'});
+        $('.book').css({'transform':'translateX(-'+moveLeft+'px)'});
+        $('.right-side').css({'transform':'translateX(-'+moveLeft+'px)'});
       });
 
     }
@@ -401,21 +466,9 @@ angular.module('meals')
 }])
 
 angular.module('meals')
-.controller('welcomeCtrl', ["$scope", "mainService", "$state", function ($scope, mainService, $state) {
-
-  $scope.login  = function () {
-    mainService.login().then(function (response) {
-      $scope.logInfo = response;
-      console.log('auth0 in ctrl: ', response);
-    }).then(function(response) {
-      $state.go('recipes');
-    });
-  }
-
-}])
-
-angular.module('meals')
 .controller('recipesCtrl', ["$scope", "mainService", "$rootScope", function ($scope, mainService, $rootScope) {
+
+  $scope.flipped = true;
 
   $scope.userId = mainService.userId;
   $scope.userName = mainService.userName;
@@ -444,5 +497,19 @@ angular.module('meals')
 
 
 
+
+}])
+
+angular.module('meals')
+.controller('welcomeCtrl', ["$scope", "mainService", "$state", function ($scope, mainService, $state) {
+
+  $scope.login  = function () {
+    mainService.login().then(function (response) {
+      $scope.logInfo = response;
+      console.log('auth0 in ctrl: ', response);
+    }).then(function(response) {
+      $state.go('recipes');
+    });
+  }
 
 }])
