@@ -156,3 +156,20 @@ body {
   width: 0px;
   height: 0px;
   transition: 2s; }
+
+.items {
+  background-color: skyblue;
+  margin: 0 2px;
+  width: 200px;
+  text-align: center;
+  border-radius: 5px; }
+
+.cat {
+  border: solid thin darkgrey;
+  padding: 0px;
+  margin: 5px;
+  width: 204px;
+  text-align: center;
+  border-radius: 5px;
+  position: relative;
+  float: left; }

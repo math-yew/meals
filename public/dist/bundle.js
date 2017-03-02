@@ -327,6 +327,34 @@ angular.module('meals')
 });
 
 
+angular.module('meals').directive('dragDir', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, elem, attrs) {
+
+      var testing = function () {
+        console.log('scope.outCrowd: ', scope.outCrowd);
+      }
+
+      $('.small').on('click', function () {
+        $(this).css('background-color','blue');
+        testing();
+        scope.myMessage();
+      });
+
+      $('.big').mousemove(function(event){
+        $("span").text(event.pageX + ", " + event.pageY);
+      });
+
+      $('.big').on('mouseover', function () {
+        console.log('mouse uped');
+      });
+
+    }
+  };
+});
+
+
 angular.module("meals").directive('homeAni', function() {
   return {
     restrict: 'A',
@@ -450,12 +478,31 @@ angular.module('meals')
 .controller('groceryCtrl', ["$scope", "mainService", function ($scope, mainService) {
 
 $scope.groceryList = mainService.groceryList;
-
-// mainService.$watch("groceryList", function (value) {
-//   $scope.groceryList = value;
-// });
-
 console.log('$scope.groceryList: ', $scope.groceryList);
+$scope.meatList = [];
+
+$scope.choose = function (item, list) {
+  $scope.choosen = item;
+  $scope.list = eval("$scope."+list);
+  $scope.listName = list;
+  console.log('$scope.choosen: ', $scope.choosen);
+  console.log('$scope.list: ', $scope.list);
+  console.log('$scope.listName: ', $scope.listName);
+}
+
+$scope.dropHere = function (arr) {
+  if($scope.list != arr){
+  arr.push($scope.choosen);
+  console.log('arr', arr);
+  $scope.list = $scope.list.filter(function( obj ) {
+    return obj.qty !== $scope.choosen.qty || obj.measure !== $scope.choosen.measure || obj.name !== $scope.choosen.name;
+  });
+  $scope.groceryList = $scope.list
+    console.log('$scope.list22222: ', $scope.list);
+  $scope.choosen = "";
+  }
+  else {console.log('already dropped here');}
+}
 
 }])
 

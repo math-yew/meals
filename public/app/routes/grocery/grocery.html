@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <h1>Grocery View</h1>
-    {{groceryList}}
+<div drag-div>
+  <h1 style="text-align: center">Grocery List</h1>
 
-    <div class="" ng-repeat="groceries in groceryList">
-      <p>{{groceries.qty}} {{groceries.measure}} {{groceries.name}}</p>
+  <div class="cat">
+    <h2 ng-click="dropHere(groceryList)">Misc.</h2>
+    <div ng-repeat="groceries in groceryList">
+      <div class="items" ng-click="choose(groceries, 'groceryList')">
+        <p>{{groceries.qty}} {{groceries.measure}} {{groceries.name}}</p>
+      </div>
     </div>
-  </body>
-</html>
+  </div>
+
+  <div class="cat">
+    <h2 ng-click="dropHere(meatList)">Meat</h2>
+    <div ng-repeat="meat in meatList">
+      <div class="items">
+        <p>{{meat.qty}} {{meat.measure}} {{meat.name}}</p>
+      </div>
+    </div>
+  </div>
+
+</div>
