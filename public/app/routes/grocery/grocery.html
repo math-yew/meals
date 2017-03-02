@@ -2,7 +2,7 @@
   <h1 style="text-align: center">Grocery List</h1>
 
   <div class="cat">
-    <h2 ng-click="dropHere(groceryList)">Misc.</h2>
+    <h2 ng-click="dropHere(groceryList, 'groceryList')">Misc.</h2>
     <div ng-repeat="groceries in groceryList">
       <div class="items" ng-click="choose(groceries, 'groceryList')">
         <p>{{groceries.qty}} {{groceries.measure}} {{groceries.name}}</p>
@@ -11,10 +11,46 @@
   </div>
 
   <div class="cat">
-    <h2 ng-click="dropHere(meatList)">Meat</h2>
+    <h2 ng-click="dropHere(meatList, 'meatList')">Meat</h2>
     <div ng-repeat="meat in meatList">
-      <div class="items">
+      <div class="items" ng-click="choose(meat, 'meatList')">
         <p>{{meat.qty}} {{meat.measure}} {{meat.name}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2 ng-click="dropHere(produceList, 'produceList')">Produce</h2>
+    <div ng-repeat="produce in produceList">
+      <div class="items" ng-click="choose(produce, 'produceList')">
+        <p>{{produce.qty}} {{produce.measure}} {{produce.name}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2 ng-click="dropHere(dairyList, 'dairyList')">Dairy</h2>
+    <div ng-repeat="dairy in dairyList">
+      <div class="items" ng-click="choose(dairy, 'dairyList')">
+        <p>{{dairy.qty}} {{dairy.measure}} {{dairy.name}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2 ng-click="dropHere(bakingList, 'bakingList')">Baking</h2>
+    <div ng-repeat="baking in bakingList">
+      <div class="items" ng-click="choose(baking, 'bakingList')">
+        <p>{{baking.qty}} {{baking.measure}} {{baking.name}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2 ng-click="dropHere(cannedList, 'cannedList')">Dairy</h2>
+    <div ng-repeat="canned in cannedList">
+      <div class="items" ng-click="choose(canned, 'cannedList')">
+        <p>{{canned.qty}} {{canned.measure}} {{canned.name}}</p>
       </div>
     </div>
   </div>

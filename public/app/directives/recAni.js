@@ -14,6 +14,12 @@ angular.module("meals").directive('recAni', function() {
         flipped = true;
       });
 
+      $('.book-cover').on('click', function () {
+        $('.book-cover').css({'transform':'rotateY(180deg) rotateZ(-15deg) skew(-15deg,-15deg)'});
+        $('.book-cover').css('background-color','grey');
+        $('.book-cover').css('border-style','thick');
+      });
+
       $('#go-back').on('click', function () {
           $('.get').css({'transform':'rotateY(0deg) rotateZ(0deg) skew(0deg,0deg)'});
           $('.get').css('background-color','blue');
@@ -21,18 +27,21 @@ angular.module("meals").directive('recAni', function() {
           flipped = false;
       });
 
-      $('.meal-plan').on('click', function () {
-        console.log('clicked with jquery');
-        $('.meal-plan').css('background-color','red');
-      });
+      var moveLeft = 350;
+      var triMove = moveLeft+50;
 
-      var moveLeft = 300;
-      var triMove = moveLeft-50;
-
-      $('.triangle').on('click', function () {
-        $('.triangle').css({'transform':'rotateZ(180deg) translateY(100px) translateX('+triMove+'px)'});
+      $('.tri-b').on('click', function () {
+        $('.tri-b').css({'transform':'rotateZ(180deg) translateY(150px) translateX('+triMove+'px)'}).hide();
+        $('.tri-a').css({'transform':'rotateZ(180deg) translateY(150px) translateX('+triMove+'px)'}).show();
         $('.book').css({'transform':'translateX(-'+moveLeft+'px)'});
         $('.right-side').css({'transform':'translateX(-'+moveLeft+'px)'});
+      });
+
+      $('.tri-a').on('click', function () {
+        $('.tri-b').css({'transform':'rotateZ(0deg) translateY(-150px) translateX(0px)'}).show();
+        $('.tri-a').css({'transform':'rotateZ(0deg) translateY(-150px) translateX(0px)'}).hide();
+        $('.book').css({'transform':'translateX(0px)'});
+        $('.right-side').css({'transform':'translateX(0px)'});
       });
 
     }

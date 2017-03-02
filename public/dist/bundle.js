@@ -360,27 +360,30 @@ angular.module("meals").directive('homeAni', function() {
     restrict: 'A',
     link: function (scope, elem, attrs) {
 
+      totHeight = window.screen.availHeight;
+      totWidth = window.screen.availWidth;
+
       $('.home-container').mousemove(function(event){
-        $("span").text(event.pageX + ", " + event.pageY);
+        $("span").text(event.pageX + ", " + event.pageY+","+totWidth+".");
 
         $('.counter').css({
-          'transform':'translateX(' + (event.pageX-800) / 6.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 7 + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 + 'px)'
         });
 
         $('.chandelier').css({
-          'transform':'translateX(' + (event.pageX-800) / 8.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 8.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 4.5 + 'px)'
         });
 
         $('.fridge').css({
-          'transform':'translateX(' + (event.pageX-800) / 10.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 10.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 10.5 + 'px)'
         });
 
         $('.grass').css({
-          'transform':'translateX(' + (event.pageX-800) / 11.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 11.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 11.5 + 'px)'
         });
 
         $('.blurred').css({
-          'transform':'translateX(' + (event.pageX-800) / 9.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 9.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 9.5 + 'px)'
         });
 
       });
@@ -430,6 +433,12 @@ angular.module("meals").directive('recAni', function() {
         flipped = true;
       });
 
+      $('.book-cover').on('click', function () {
+        $('.book-cover').css({'transform':'rotateY(180deg) rotateZ(-15deg) skew(-15deg,-15deg)'});
+        $('.book-cover').css('background-color','grey');
+        $('.book-cover').css('border-style','thick');
+      });
+
       $('#go-back').on('click', function () {
           $('.get').css({'transform':'rotateY(0deg) rotateZ(0deg) skew(0deg,0deg)'});
           $('.get').css('background-color','blue');
@@ -437,18 +446,21 @@ angular.module("meals").directive('recAni', function() {
           flipped = false;
       });
 
-      $('.meal-plan').on('click', function () {
-        console.log('clicked with jquery');
-        $('.meal-plan').css('background-color','red');
-      });
+      var moveLeft = 350;
+      var triMove = moveLeft+50;
 
-      var moveLeft = 300;
-      var triMove = moveLeft-50;
-
-      $('.triangle').on('click', function () {
-        $('.triangle').css({'transform':'rotateZ(180deg) translateY(100px) translateX('+triMove+'px)'});
+      $('.tri-b').on('click', function () {
+        $('.tri-b').css({'transform':'rotateZ(180deg) translateY(150px) translateX('+triMove+'px)'}).hide();
+        $('.tri-a').css({'transform':'rotateZ(180deg) translateY(150px) translateX('+triMove+'px)'}).show();
         $('.book').css({'transform':'translateX(-'+moveLeft+'px)'});
         $('.right-side').css({'transform':'translateX(-'+moveLeft+'px)'});
+      });
+
+      $('.tri-a').on('click', function () {
+        $('.tri-b').css({'transform':'rotateZ(0deg) translateY(-150px) translateX(0px)'}).show();
+        $('.tri-a').css({'transform':'rotateZ(0deg) translateY(-150px) translateX(0px)'}).hide();
+        $('.book').css({'transform':'translateX(0px)'});
+        $('.right-side').css({'transform':'translateX(0px)'});
       });
 
     }
@@ -480,6 +492,10 @@ angular.module('meals')
 $scope.groceryList = mainService.groceryList;
 console.log('$scope.groceryList: ', $scope.groceryList);
 $scope.meatList = [];
+$scope.produceList = [];
+$scope.dairyList = [];
+$scope.cannedList = [];
+$scope.bakingList = [];
 
 $scope.choose = function (item, list) {
   $scope.choosen = item;
@@ -490,20 +506,49 @@ $scope.choose = function (item, list) {
   console.log('$scope.listName: ', $scope.listName);
 }
 
-$scope.dropHere = function (arr) {
-  if($scope.list != arr){
-  arr.push($scope.choosen);
-  console.log('arr', arr);
-  $scope.list = $scope.list.filter(function( obj ) {
-    return obj.qty !== $scope.choosen.qty || obj.measure !== $scope.choosen.measure || obj.name !== $scope.choosen.name;
-  });
-  $scope.groceryList = $scope.list
-    console.log('$scope.list22222: ', $scope.list);
-  $scope.choosen = "";
+$scope.dropHere = function (arr, list) {
+  if($scope.choosen){
+    console.log('$scope.listName: ', $scope.listName);
+    console.log('list: ', list);
+    if($scope.listName === list) {
+      console.log('already dropped here');
+    }
+    else {
+      arr.push($scope.choosen);
+      console.log('arr', arr);
+      $scope.list = $scope.list.filter(function( obj ) {
+        return obj.qty !== $scope.choosen.qty || obj.measure !== $scope.choosen.measure || obj.name !== $scope.choosen.name;
+      });
+      if($scope.listName === 'groceryList'){
+        $scope.groceryList = $scope.list;
+      }
+      if($scope.listName === 'meatList'){
+        $scope.meatList = $scope.list;
+      }
+      if($scope.listName === 'produceList'){
+        $scope.produceList = $scope.list;
+      }
+      if($scope.listName === 'dairyList'){
+        $scope.dairyList = $scope.list;
+      }
+      if($scope.listName === 'bakingList'){
+        $scope.bakingList = $scope.list;
+      }
+      if($scope.listName === 'cannedList'){
+        $scope.cannedList = $scope.list;
+      }
+
+
+
+
+      $scope.choosen = "";
+      $scope.listName = list;
+    }
   }
-  else {console.log('already dropped here');}
 }
 
+
+/////////end///////////
 }])
 
 angular.module('meals')

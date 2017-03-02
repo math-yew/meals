@@ -1,8 +1,10 @@
 
 <div class="meal-plan" rec-ani>
-<h3>meal plan</h3>
-<div class="" ng-repeat="meal in $ctrl.mealList">
-  <p><span ng-click="$ctrl.removeMeal(meal)">x </span>{{meal[1]}}</p>
+<h3 class="hand-title">Meal Plan</h3>
+<div class="paper" ng-repeat="meal in $ctrl.mealList">
+  <p class="hand" ng-click="$ctrl.removeMeal(meal)">{{meal[1]}}</p>
+  <br>
+  <br>
 </div>
   <button type="button" ng-click="$ctrl.makeList($ctrl.mealList)"> Make Grocery List</button>
 </div>
