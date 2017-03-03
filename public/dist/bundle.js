@@ -195,6 +195,137 @@ angular.module('meals')
 
 }])
 
+angular.module('meals')
+.component('editRecipe', {
+    bindings: {
+      certainRecipe: '=',
+      update: '@'
+    },
+    templateUrl:'./app/components/editTemp.html',
+    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
+
+      var $scope = this;
+
+      $rootScope.certainRecipe = [];
+
+
+      this.refreshIt = function () {
+        if(this.update==='true'){
+          console.log('update?');
+          this.newRecipe=$rootScope.certainRecipe[0];
+          this.ingredientsList=mainService.refreshIngredients($rootScope.certainRecipe);
+          // this.ingredientsList = mainService.ingredients;
+        }
+      }
+
+      // this.ingredients = $rootScope.ingredients;
+
+      $rootScope.$watch('certainRecipe',function() {
+        console.log('watched');
+        $scope.refreshIt();
+      });
+
+      // mainService.$watch('ingredients', function (value) {
+      //   $scope.ingredientsList = value;
+      // });
+
+      this.submitRecipe = function(newRecipe) {
+            console.log("ctrl working - recipe");
+        mainService.submitRecipe(newRecipe).then(function (res) {
+          $scope.rec = res;
+        })
+      }
+
+      this.updateRecipe = function(newRecipe) {
+            console.log("ctrl working - recipe");
+        mainService.updateRecipe(newRecipe).then(function (response) {
+          console.log('updated response: ', response);
+        })
+      }
+
+      this.addIngredient = function (ingredient) {
+        mainService.addIngredient(ingredient);
+      }
+
+      this.ingredientsList = mainService.ingredients;
+
+      this.removeIngredient = function (ingredients) {
+        mainService.removeIngredient(ingredients);
+      }
+
+
+
+    }]
+});
+
+angular.module('meals')
+.component('mealPlan', {
+    bindings: {
+        mealList: '='
+    },
+    templateUrl:'./app/components/planTemp.html',
+    controller: ["mainService", "$rootScope", "$state", function (mainService, $rootScope, $state){
+
+      var self = this;
+      this.removeMeal = function (meal) {
+        console.log('removeMeal contrl: ', meal);
+        mainService.removeMeal(meal);
+      }
+
+
+    this.makeList = function (meals) {
+      console.log('make list controller: ', self.listTitle);
+      mainService.makeList(meals);
+    }
+  }]
+});
+
+angular.module('meals')
+.component('singleRecipe', {
+    bindings: {
+        certainRecipe: '='
+    },
+    templateUrl:'./app/components/recipe_Temp.html',
+    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
+
+      this.deleteRecipe = function(id) {
+        mainService.deleteRecipe(id)
+        .then(function(response) {
+          console.log('deleted?: ', response);
+        });
+      }
+    }]
+});
+
+angular.module('meals')
+.component('allRecipes', {
+    bindings: {
+        eachRecipe: '=',
+        certainRecipe: '=',
+        mealList: '='
+    },
+    templateUrl:'./app/components/recipesTemp.html',
+    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
+
+      var $scope = this;
+      $scope.getRecipe = function(id) {
+        mainService.getRecipe(id)
+        .then(function(response) {
+          console.log('the response is: ', response);
+          $rootScope.certainRecipe = response;
+          console.log('this.certainRecipe', $scope.certainRecipe);
+        });
+      }
+
+      $scope.addToList = function(id, name) {
+        console.log('add clicked');
+        this.mealList = mainService.addToList(id, name);
+        $rootScope.mealList = this.mealList;
+      }
+
+    }]
+});
+
 
 angular.module('meals').directive('dragDir', function() {
   return {
@@ -319,12 +450,6 @@ angular.module("meals").directive('recAni', function() {
 // ,1000)
 
 angular.module('meals')
-.controller('homeCtrl', ["$scope", "mainService", function ($scope, mainService) {
-
-
-}])
-
-angular.module('meals')
 .controller('groceryCtrl', ["$scope", "mainService", function ($scope, mainService) {
 
 $scope.groceryList = mainService.groceryList;
@@ -395,6 +520,12 @@ $scope.print = function () {
 }])
 
 angular.module('meals')
+.controller('homeCtrl', ["$scope", "mainService", function ($scope, mainService) {
+
+
+}])
+
+angular.module('meals')
 .controller('recipesCtrl', ["$scope", "mainService", "$rootScope", function ($scope, mainService, $rootScope) {
 
   $scope.flipped = true;
@@ -433,140 +564,14 @@ angular.module('meals')
 .controller('welcomeCtrl', ["$scope", "mainService", "$state", function ($scope, mainService, $state) {
 
   $scope.login  = function () {
-    mainService.login().then(function (response) {
-      $scope.logInfo = response;
-      console.log('auth0 in ctrl: ', response);
-    }).then(function(response) {
-      $state.go('recipes');
-    });
-  }
-
-}])
-
-angular.module('meals')
-.component('editRecipe', {
-    bindings: {
-      certainRecipe: '=',
-      update: '@'
-    },
-    templateUrl:'./app/components/editTemp.html',
-    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
-
-      var $scope = this;
-
-      this.refreshIt = function () {
-        if(this.update==='true'){
-          console.log('update?');
-          this.newRecipe=$rootScope.certainRecipe[0];
-          this.ingredientsList=mainService.refreshIngredients($rootScope.certainRecipe);
-          // this.ingredientsList = mainService.ingredients;
-        }
-      }
-
-      // this.ingredients = $rootScope.ingredients;
-
-      $rootScope.$watch('certainRecipe',function() {
-        console.log('watched');
-        $scope.refreshIt();
-      });
-
-      // mainService.$watch('ingredients', function (value) {
-      //   $scope.ingredientsList = value;
-      // });
-
-      this.submitRecipe = function(newRecipe) {
-            console.log("ctrl working - recipe");
-        mainService.submitRecipe(newRecipe).then(function (res) {
-          $scope.rec = res;
-        })
-      }
-
-      this.updateRecipe = function(newRecipe) {
-            console.log("ctrl working - recipe");
-        mainService.updateRecipe(newRecipe).then(function (response) {
-          console.log('updated response: ', response);
-        })
-      }
-
-      this.addIngredient = function (ingredient) {
-        mainService.addIngredient(ingredient);
-      }
-
-      this.ingredientsList = mainService.ingredients;
-
-      this.removeIngredient = function (ingredients) {
-        mainService.removeIngredient(ingredients);
-      }
-
-
-
-    }]
-});
-
-angular.module('meals')
-.component('mealPlan', {
-    bindings: {
-        mealList: '='
-    },
-    templateUrl:'./app/components/planTemp.html',
-    controller: ["mainService", "$rootScope", "$state", function (mainService, $rootScope, $state){
-
-      var self = this;
-      this.removeMeal = function (meal) {
-        console.log('removeMeal contrl: ', meal);
-        mainService.removeMeal(meal);
-      }
-
-
-    this.makeList = function (meals) {
-      console.log('make list controller: ', self.listTitle);
-      mainService.makeList(meals);
+    console.log('before');
+        mainService.login().then(function (response) {
+          $scope.logInfo = response;
+          console.log('auth0 in ctrl: ', response);
+        }).then(function(response) {
+          $state.go('recipes');
+        });
     }
-  }]
-});
 
-angular.module('meals')
-.component('singleRecipe', {
-    bindings: {
-        certainRecipe: '='
-    },
-    templateUrl:'./app/components/recipe_Temp.html',
-    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
-
-      this.deleteRecipe = function(id) {
-        mainService.deleteRecipe(id)
-        .then(function(response) {
-          console.log('deleted?: ', response);
-        });
-      }
-    }]
-});
-
-angular.module('meals')
-.component('allRecipes', {
-    bindings: {
-        eachRecipe: '=',
-        certainRecipe: '=',
-        mealList: '='
-    },
-    templateUrl:'./app/components/recipesTemp.html',
-    controller: ["mainService", "$rootScope", function (mainService, $rootScope){
-
-      var $scope = this;
-      $scope.getRecipe = function(id) {
-        mainService.getRecipe(id)
-        .then(function(response) {
-          console.log('the response is: ', response);
-          $rootScope.certainRecipe = response;
-          console.log('this.certainRecipe', $scope.certainRecipe);
-        });
-      }
-
-      $scope.addToList = function(id, name) {
-        console.log('add clicked');
-        this.mealList = mainService.addToList(id, name);
-        $rootScope.mealList = this.mealList;
-      }
-
-    }]
-});
+  $scope.login();  
+}])

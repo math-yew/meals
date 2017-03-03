@@ -9,6 +9,9 @@ angular.module('meals')
 
       var $scope = this;
 
+      $rootScope.certainRecipe = [];
+
+
       this.refreshIt = function () {
         if(this.update==='true'){
           console.log('update?');

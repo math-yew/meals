@@ -17,7 +17,7 @@ module.exports = {
     })
   },
 
-  addUser: function (req, res) {
+  addUser: function (req, res, next) {
     console.log('req.body.id: ', req.body.id);
     if(userArr.indexOf(req.body.id) === -1){
       db.add_user([req.body.name, req.body.email, req.body.id], function (err, results) {
@@ -25,11 +25,20 @@ module.exports = {
           console.error(err);
           return res.send(err);
         }
-        console.log('new user added');
-        return res.send(results);
       })
     }
-        return res.send("Existing User");
+    next();
+  },
+
+  getUser: function (req, res) {
+    db.get_user([req.body.id], function (err, results) {
+      if(err){
+        console.error(err);
+        return res.send(err);
+      }
+      console.log('get user SC', results);
+      return res.send(results);
+    })
   },
 
   getRecipes: function (req, res) {
