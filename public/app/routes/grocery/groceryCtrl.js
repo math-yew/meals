@@ -50,14 +50,19 @@ $scope.dropHere = function (arr, list) {
         $scope.cannedList = $scope.list;
       }
 
-
-
-
       $scope.choosen = "";
       $scope.listName = list;
     }
   }
 }
+
+$scope.print = function () {
+  setTimeout(function () {
+    window.print();
+  },1500)
+
+}
+
 
 
 /////////end///////////

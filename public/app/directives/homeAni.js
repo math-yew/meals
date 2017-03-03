@@ -11,7 +11,7 @@ angular.module("meals").directive('homeAni', function() {
         $("span").text(event.pageX + ", " + event.pageY+","+totWidth+".");
 
         $('.counter').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 7 + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 8 + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 + 'px)'
         });
 
         $('.chandelier').css({
@@ -31,31 +31,6 @@ angular.module("meals").directive('homeAni', function() {
         });
 
       });
-
-      // $(window).on('scroll', function() {
-      //   var magic = $(this).scrollTop();
-      //   console.log(magic);
-      //
-      //   var shooting = .1*Math.abs(500-magic);
-      //
-
-      //
-      //   $('.headline').css({
-      //   'transform': 'translate(+' + magic / 8 + '%) rotateY('+magic+'deg)'
-      //   });
-      // });
-
-
-
-
-
-      $('.center').on('click', function () {
-        console.log('clicked with jquery');
-        $('.center').css('background-color','red');
-      });
-
-
-
 
     }
   };

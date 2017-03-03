@@ -4,22 +4,10 @@ angular.module('meals').directive('dragDir', function() {
     restrict: 'A',
     link: function (scope, elem, attrs) {
 
-      var testing = function () {
-        console.log('scope.outCrowd: ', scope.outCrowd);
-      }
-
-      $('.small').on('click', function () {
-        $(this).css('background-color','blue');
-        testing();
-        scope.myMessage();
-      });
-
-      $('.big').mousemove(function(event){
-        $("span").text(event.pageX + ", " + event.pageY);
-      });
-
-      $('.big').on('mouseover', function () {
-        console.log('mouse uped');
+      $('.print').on('click', function () {
+        $('.cat').css('background-color','white');
+        $('p').css('background-color','white');
+        $('.grocery').css('width','800px');
       });
 
     }

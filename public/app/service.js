@@ -137,7 +137,6 @@ angular.module('meals')
       for (var i = 0; i < mealList.length; i++) {
         tempArr.push(mealList[i][0]);
       }
-      console.log('TEST!!!!!', tempArr);
       for (var i = 0; i < response.data.length; i++) {
         for (var j = 0; j < tempArr.length; j++) {
           if(tempArr[j] === response.data[i].recipe_id){
@@ -146,8 +145,6 @@ angular.module('meals')
         }
       }
       self.groceryList = groceryList;
-      console.log('this.groceryList: ', self.groceryList);
-
     }).then(function(response) {
       $state.go('grocery');
     });
