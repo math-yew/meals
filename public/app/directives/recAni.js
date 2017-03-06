@@ -18,6 +18,19 @@ angular.module("meals").directive('recAni', function() {
         $('.book-cover').css({'transform':'rotateY(180deg) rotateZ(-15deg) skew(-15deg,-15deg)'});
         $('.book-cover').css('background-color','grey');
         $('.book-cover').css('border-style','thick');
+        $('.new-page').css({'transform-origin' :'25% 25%'});
+      });
+
+      $('.new-page-corner').on('click', function () {
+        $('.new-page').css('z-index','14');
+        $('.new-page').css({'transform':'rotate(0deg) scale(1, 1)'});
+        $('.new-page').css({'transform-origin' :'50% 50%'});
+      });
+
+      $('#cancel-edit').on('click', function () {
+        $('.new-page').css('z-index','0');
+        $('.new-page').css({'transform':'rotate(-5deg) scale(.91, .91)'});
+        $('.new-page').css({'transform-origin' :'30% 30%'});
       });
 
       $('#go-back').on('click', function () {

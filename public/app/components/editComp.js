@@ -48,6 +48,7 @@ angular.module('meals')
 
       this.addIngredient = function (ingredient) {
         mainService.addIngredient(ingredient);
+        this.ingredientsList=mainService.ingredients;
       }
 
       this.ingredientsList = mainService.ingredients;
@@ -56,7 +57,12 @@ angular.module('meals')
         mainService.removeIngredient(ingredients);
       }
 
-
+      this.deleteRecipe = function(id) {
+        mainService.deleteRecipe(id)
+        .then(function(response) {
+          console.log('deleted?: ', response);
+        });
+      }
 
     }
 });

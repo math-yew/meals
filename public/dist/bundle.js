@@ -138,9 +138,12 @@ angular.module('meals')
   this.ingredients = ingredients;
 
   this.submitRecipe = function (newRecipe) {
+
     var ingr = {};
     ingr.ingredients = ingredients;
+    console.log('Submiting ingredients: ', ingredients);
     newRecipe.ingredients = ingredients;
+    console.log('Submiting ingredients: ', ingr);
     console.log('newRecipe: ', newRecipe);
     return $http.post('/api/recipes', newRecipe)
     .then(function (res) {
@@ -245,6 +248,7 @@ angular.module('meals')
 
       this.addIngredient = function (ingredient) {
         mainService.addIngredient(ingredient);
+        this.ingredientsList=mainService.ingredients;
       }
 
       this.ingredientsList = mainService.ingredients;
@@ -253,7 +257,12 @@ angular.module('meals')
         mainService.removeIngredient(ingredients);
       }
 
-
+      this.deleteRecipe = function(id) {
+        mainService.deleteRecipe(id)
+        .then(function(response) {
+          console.log('deleted?: ', response);
+        });
+      }
 
     }]
 });
@@ -288,12 +297,7 @@ angular.module('meals')
     templateUrl:'./app/components/recipe_Temp.html',
     controller: ["mainService", "$rootScope", function (mainService, $rootScope){
 
-      this.deleteRecipe = function(id) {
-        mainService.deleteRecipe(id)
-        .then(function(response) {
-          console.log('deleted?: ', response);
-        });
-      }
+
     }]
 });
 
@@ -351,27 +355,34 @@ angular.module("meals").directive('homeAni', function() {
       totHeight = window.screen.availHeight;
       totWidth = window.screen.availWidth;
 
+      // $('.home-container').mousemove(function(event){
+      //   $('.chandelier').css('imagewidth','100px');
+      // });
+      var fasterX = 2
+      var fasterY = 2;
       $('.home-container').mousemove(function(event){
-        $("span").text(event.pageX + ", " + event.pageY+","+totWidth+".");
+        // $("span").text(event.pageX + ", " + event.pageY+","+totWidth+".");
+
+        $('.welcome-screen').css('background-size','150px')
 
         $('.counter').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 8 + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 8 * fasterX + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 * fasterY  + 'px)'
         });
 
         $('.chandelier').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 8.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 4.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 8.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 4.5 * fasterY + 'px)'
         });
 
         $('.fridge').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 10.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 10.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 10.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 10.5 * fasterY + 'px)'
         });
 
         $('.grass').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 11.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 11.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 11.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 11.5 * fasterY + 'px)'
         });
 
         $('.blurred').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 9.5 + 'px) translateY(' + (event.pageY-totHeight/2) / 9.5 + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 9.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 9.5 * fasterY + 'px)'
         });
 
       });
@@ -400,6 +411,19 @@ angular.module("meals").directive('recAni', function() {
         $('.book-cover').css({'transform':'rotateY(180deg) rotateZ(-15deg) skew(-15deg,-15deg)'});
         $('.book-cover').css('background-color','grey');
         $('.book-cover').css('border-style','thick');
+        $('.new-page').css({'transform-origin' :'25% 25%'});
+      });
+
+      $('.new-page-corner').on('click', function () {
+        $('.new-page').css('z-index','14');
+        $('.new-page').css({'transform':'rotate(0deg) scale(1, 1)'});
+        $('.new-page').css({'transform-origin' :'50% 50%'});
+      });
+
+      $('#cancel-edit').on('click', function () {
+        $('.new-page').css('z-index','0');
+        $('.new-page').css({'transform':'rotate(-5deg) scale(.91, .91)'});
+        $('.new-page').css({'transform-origin' :'30% 30%'});
       });
 
       $('#go-back').on('click', function () {

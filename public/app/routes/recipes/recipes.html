@@ -3,8 +3,11 @@
 </div>
 
 <div class="book" rec-ani>
-  <div class="book-cover shadow" ng-click="getRecipes()">
-    my cover
+  <div class="book-cover shadow cat" ng-click="getRecipes()">
+    <div class="centered">
+      <br>
+      <h1 class="boxed">My Recipes</h1>
+    </div>
   </div>
   <div class="page get">
     <!-- <button ng-click="getRecipes()">Get Recipes</button> -->
@@ -14,11 +17,13 @@
     </div>
   </div>
 
-  <div class="page">
+  <div class="page new-page">
+    <p style="text-align: right" class='new-page-corner'>New Recipe</p>
     <edit-recipe></edit-recipe>
   </div>
 
   <div class="page">
+    <button type="button" id="go-back" name="button" ng-show="flipped">Go Back</button>
     <button type="button" name="button" ng-click="flipped = !flipped" ng-show="flipped">Edit</button>
     <button type="button" name="button" ng-click="flipped = !flipped" ng-hide="flipped">Go Back</button>
     <single-recipe certain-recipe="certainRecipe" ng-show="flipped"></single-recipe>

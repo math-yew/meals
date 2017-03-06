@@ -95,9 +95,12 @@ angular.module('meals')
   this.ingredients = ingredients;
 
   this.submitRecipe = function (newRecipe) {
+
     var ingr = {};
     ingr.ingredients = ingredients;
+    console.log('Submiting ingredients: ', ingredients);
     newRecipe.ingredients = ingredients;
+    console.log('Submiting ingredients: ', ingr);
     console.log('newRecipe: ', newRecipe);
     return $http.post('/api/recipes', newRecipe)
     .then(function (res) {

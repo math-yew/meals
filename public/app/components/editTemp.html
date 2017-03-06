@@ -1,19 +1,11 @@
+<br><br>
 <div class="edit-recipes">
-
   <!-- <button type="button" ng-click="$ctrl.refreshIt()">test</button> -->
-  <input type="text" ng-model="$ctrl.newRecipe.name" placeholder="Recipe Name"><br>
-  <input type="text" ng-model="$ctrl.newRecipe.directions" placeholder="Directions"><br>
-  <input type="text" ng-model="$ctrl.newRecipe.rating" placeholder="Rating"><br>
-  <input type="text" ng-model="$ctrl.newRecipe.source" placeholder="Source"><br>
-{{$ctrl.ingredientsList}}...
-
+  <input style="font-size:30px" type="text" ng-model="$ctrl.newRecipe.rname">
+  <h3>Ingredients:</h3>
   <div ng-repeat="ingredients in $ctrl.ingredientsList" style="list-style-type:none">
-    <p><span ng-click="$ctrl.removeIngredient(ingredients)">x</span>{{ingredients[0]}} {{ingredients[1]}} {{ingredients[2]}}</p>
+    <p><span style="color:red" ng-click="$ctrl.removeIngredient(ingredients)">X  </span>{{ingredients[0]}} {{ingredients[1]}} {{ingredients[2]}}</p>
   </div>
-............
-  <!-- <ul ng-repeat="ingrd in $ctrl.certainRecipe" style="list-style-type:none">
-    <li><p ng-click="$ctrl.removeIngredient(ingrd)">x</p><p>{{ingrd[0]}} {{ingrd[1]}} {{ingrd[2]}}</p></li>
-  </ul> -->
 
   <form>
     <input type="text" ng-model="$ctrl.ingredient.qty" placeholder="QTY">
@@ -21,7 +13,12 @@
     <input type="text" ng-model="$ctrl.ingredient.name" placeholder="Ingredient">
     <button ng-click="$ctrl.addIngredient($ctrl.ingredient)">Add</button>
   </form>
-  <button ng-click="$ctrl.submitRecipe( )" ng-hide="$ctrl.update">Submit</button>
-    <button ng-click="$ctrl.updateRecipe($ctrl.newRecipe)" ng-show="$ctrl.update">Update</button>
-    <button type="button" ng-click="$ctrl.deleteRecipe($ctrl.certainRecipe[0].recipe_id)">Delete Recipe</button>
+
+  <h3>Directions:</h3>
+  <input class="directions" type="text" ng-model="$ctrl.newRecipe.directions" placeholder="Directions"><br>
+<br>
+  <button ng-click="$ctrl.submitRecipe($ctrl.newRecipe)" ng-hide="$ctrl.update">Submit</button>
+  <button ng-click="$ctrl.updateRecipe($ctrl.newRecipe)" ng-show="$ctrl.update">Update</button>
+  <button type="button" ng-click="$ctrl.deleteRecipe($ctrl.certainRecipe[0].recipe_id)" ng-show="$ctrl.update">Delete Recipe</button>
+  <button id="cancel-edit">Done</button>
 </div>
