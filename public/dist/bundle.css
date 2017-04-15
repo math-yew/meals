@@ -135,10 +135,8 @@ input {
   left: -25%; }
 
 .welcome-screen, .grass, .blurred, .fridge, .counter, .chandelier, .home-top {
-  width: 150%;
-  height: 150%;
-  margin-top: -10%;
-  margin-left: -25%;
+  width: 100%;
+  height: auto;
   background-attachment: fixed;
   position: absolute;
   background-position: center;
@@ -265,10 +263,10 @@ input {
   text-align: center;
   display: inline-block;
   height: 100%;
-  line-height: 120px;
+  line-height: 130px;
   white-space: nowrap;
   font-size: 50px;
-  font-family: Ovo; }
+  font-family: Cardo; }
 
 .boxed {
   border: solid thin;
@@ -302,4 +300,13 @@ input {
   input {
     width: 80%; }
   .directions {
-    width: 80%; } }
+    width: 80%; }
+  .centered {
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    height: 80%;
+    line-height: 100px;
+    white-space: nowrap;
+    font-size: 20px;
+    font-family: Cardo; } }

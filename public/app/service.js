@@ -17,13 +17,16 @@ angular.module('meals')
       console.log('info: ', info);
       $http.post('/api/users', info)
       .then(function(response) {
+        self.userTableId = response.data[0].user_id
         console.log('list of users: ', response);
+        console.log('self.userTableId: ', self.userTableId);
       });
     });
   }
 
   this.getRecipes = function () {
-    return $http.get('/api/recipes');
+    var owner = self.userTableId;
+    return $http.get('/api/recipes' + owner);
   }
 
 
@@ -66,6 +69,7 @@ angular.module('meals')
     ingredientArr.push(ingredient.name);
     ingredients.push(ingredientArr);
     console.log('ingredients: ', ingredients);
+    self.ingredients=ingredients;
   }
 
   this.removeIngredient = function (ingredient) {
@@ -98,9 +102,8 @@ angular.module('meals')
 
     var ingr = {};
     ingr.ingredients = ingredients;
-    console.log('Submiting ingredients: ', ingredients);
     newRecipe.ingredients = ingredients;
-    console.log('Submiting ingredients: ', ingr);
+    newRecipe.user=self.userTableId;
     console.log('newRecipe: ', newRecipe);
     return $http.post('/api/recipes', newRecipe)
     .then(function (res) {
