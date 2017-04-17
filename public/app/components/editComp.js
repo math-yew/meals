@@ -8,6 +8,7 @@ angular.module('meals')
     controller: function (mainService, $rootScope){
 
       var $scope = this;
+      var self = this;
 
       $rootScope.certainRecipe = [];
 
@@ -48,7 +49,9 @@ angular.module('meals')
 
       this.addIngredient = function (ingredient) {
         mainService.addIngredient(ingredient);
-        this.ingredientsList=mainService.ingredients;
+        self.ingredientsList=mainService.ingredients;
+        console.log('mainService.ingredients: ', mainService.ingredients);
+        console.log('self.ingredientsList: ', self.ingredientsList);
       }
 
       this.ingredientsList = mainService.ingredients;

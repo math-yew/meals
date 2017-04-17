@@ -60,13 +60,16 @@ angular.module('meals')
       console.log('info: ', info);
       $http.post('/api/users', info)
       .then(function(response) {
+        self.userTableId = response.data[0].user_id
         console.log('list of users: ', response);
+        console.log('self.userTableId: ', self.userTableId);
       });
     });
   }
 
   this.getRecipes = function () {
-    return $http.get('/api/recipes');
+    var owner = self.userTableId;
+    return $http.get('/api/recipes' + owner);
   }
 
 
@@ -109,6 +112,7 @@ angular.module('meals')
     ingredientArr.push(ingredient.name);
     ingredients.push(ingredientArr);
     console.log('ingredients: ', ingredients);
+    self.ingredients=ingredients;
   }
 
   this.removeIngredient = function (ingredient) {
@@ -141,9 +145,8 @@ angular.module('meals')
 
     var ingr = {};
     ingr.ingredients = ingredients;
-    console.log('Submiting ingredients: ', ingredients);
     newRecipe.ingredients = ingredients;
-    console.log('Submiting ingredients: ', ingr);
+    newRecipe.user=self.userTableId;
     console.log('newRecipe: ', newRecipe);
     return $http.post('/api/recipes', newRecipe)
     .then(function (res) {
@@ -208,6 +211,7 @@ angular.module('meals')
     controller: ["mainService", "$rootScope", function (mainService, $rootScope){
 
       var $scope = this;
+      var self = this;
 
       $rootScope.certainRecipe = [];
 
@@ -248,7 +252,9 @@ angular.module('meals')
 
       this.addIngredient = function (ingredient) {
         mainService.addIngredient(ingredient);
-        this.ingredientsList=mainService.ingredients;
+        self.ingredientsList=mainService.ingredients;
+        console.log('mainService.ingredients: ', mainService.ingredients);
+        console.log('self.ingredientsList: ', self.ingredientsList);
       }
 
       this.ingredientsList = mainService.ingredients;
@@ -358,31 +364,33 @@ angular.module("meals").directive('homeAni', function() {
       // $('.home-container').mousemove(function(event){
       //   $('.chandelier').css('imagewidth','100px');
       // });
-      var fasterX = 2
+      var fasterX = 3
       var fasterY = 2;
       $('.home-container').mousemove(function(event){
         // $("span").text(event.pageX + ", " + event.pageY+","+totWidth+".");
 
-        $('.welcome-screen').css('background-size','150px')
+        $('.welcome-screen').css({
+          'transform':'rotate(-5deg) scale(.5, .5)'
+        });
 
         $('.counter').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 8 * fasterX + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 * fasterY  + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 8 * fasterX + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 * fasterY  + 'px) scale(1.3, 1.3)'
         });
 
         $('.chandelier').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 8.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 4.5 * fasterY + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 8.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 2.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
         $('.fridge').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 10.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 10.5 * fasterY + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 10.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 10.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
         $('.grass').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 11.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 11.5 * fasterY + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 11.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 11.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
         $('.blurred').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 9.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 9.5 * fasterY + 'px)'
+          'transform':'translateX(' + (event.pageX-totWidth/2) / 9.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 9.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
       });

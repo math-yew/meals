@@ -1,7 +1,7 @@
 <br><br>
 <div class="edit-recipes">
   <!-- <button type="button" ng-click="$ctrl.refreshIt()">test</button> -->
-  <input style="font-size:30px" type="text" ng-model="$ctrl.newRecipe.rname">
+  <input style="font-size:30px" type="text" ng-model="$ctrl.newRecipe.name">
   <h3>Ingredients:</h3>
   <div ng-repeat="ingredients in $ctrl.ingredientsList" style="list-style-type:none">
     <p><span style="color:red" ng-click="$ctrl.removeIngredient(ingredients)">X  </span>{{ingredients[0]}} {{ingredients[1]}} {{ingredients[2]}}</p>

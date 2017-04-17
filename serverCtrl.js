@@ -42,7 +42,7 @@ module.exports = {
   },
 
   getRecipes: function (req, res) {
-    db.get_recipes([], function (err, results) {
+    db.get_recipes([req.params.owner], function (err, results) {
       if(err){
         console.error(err);
         return res.send(err);
@@ -68,7 +68,7 @@ module.exports = {
   },
 
   addRecipe: function (req, res) {
-    db.add_recipe([req.body.name, req.body.directions, req.body.rating, req.body.source], function (err, results) {
+    db.add_recipe([req.body.name, req.body.directions, req.body.rating, req.body.source, req.body.user], function (err, results) {
       if(err){
         console.error(err);
         return res.send(err);
@@ -77,7 +77,7 @@ module.exports = {
     })
   },
 
-  addIngredients: function (req, res) {
+  addIngredients: function (req, res, next) {
     console.log('add ingredients initiated',req.body);
     // console.log('req.body: ', req.body);
     for (var i = 0; i < req.body.ingredients.length; i++) {
@@ -86,7 +86,8 @@ module.exports = {
           console.error(err);
           return res.send(err);
         }
-        return res.send(results);
+        // return res.send(results);
+        next();
       })
     }
   },
@@ -143,7 +144,9 @@ module.exports = {
   },
 
   finished: function (req, res) {
-    return res.send(req);
+    // console.log('res: ', res);
+    // console.log('req: ', req);
+    return res.send("complete");
   }
 
 }
