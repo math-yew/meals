@@ -552,6 +552,12 @@ $scope.print = function () {
 }])
 
 angular.module('meals')
+.controller('homeCtrl', ["$scope", "mainService", function ($scope, mainService) {
+
+
+}])
+
+angular.module('meals')
 .controller('recipesCtrl', ["$scope", "mainService", "$rootScope", function ($scope, mainService, $rootScope) {
 
   $scope.flipped = true;
@@ -600,10 +606,4 @@ angular.module('meals')
     }
 
   $scope.login();  
-}])
-
-angular.module('meals')
-.controller('homeCtrl', ["$scope", "mainService", function ($scope, mainService) {
-
-
 }])
