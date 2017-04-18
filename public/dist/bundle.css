@@ -142,7 +142,8 @@ input {
   background-attachment: fixed;
   position: absolute;
   background-position: center;
-  display: inline-block; }
+  display: inline-block;
+  transition: 3.5s; }
 
 .grass {
   background: url("../app/css/images/grass.png") center center no-repeat;
@@ -238,6 +239,9 @@ input {
   margin: 0px;
   padding: 0px; }
 
+.notepad-button {
+  margin: 10px 0; }
+
 .user-info {
   width: 100%;
   text-align: right;
@@ -272,7 +276,9 @@ input {
 
 .boxed {
   border: solid thin;
-  box-shadow: 0px 0px 55px 55px #009700; }
+  box-shadow: 0px 0px 5px 5px #00ca00;
+  padding: 0 10px;
+  background-color: #d2f8d2; }
 
 .print {
   position: fixed;
@@ -289,7 +295,15 @@ input {
   height: 150px;
   width: 400px;
   text-align: left;
-  vertical-align: text-top; }
+  display: inline-block;
+  font-size: 15px; }
+
+.clear {
+  float: left; }
+
+.text-left {
+  text-align: left;
+  margin-left: 15px; }
 
 @media (max-width: 900px) {
   .triangle, .tri-a, .tri-b {
@@ -311,4 +325,7 @@ input {
     line-height: 100px;
     white-space: nowrap;
     font-size: 20px;
-    font-family: Cardo; } }
+    font-family: Cardo; }
+  .clear {
+    float: none;
+    clear: both; } }

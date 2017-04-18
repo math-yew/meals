@@ -1,10 +1,10 @@
 angular.module('meals')
 .controller('recipesCtrl', function ($scope, mainService, $rootScope) {
-
+  mainService.refreshUserInfo();
+  var userInfo = JSON.parse(localStorage.getItem('recipe-login')) || [];
   $scope.flipped = true;
-
-  $scope.userId = mainService.userId;
-  $scope.userName = mainService.userName;
+  $scope.userId = userInfo.id
+  $scope.userName = userInfo.name
 
   $rootScope.$watch("certainRecipe", function (value) {
     $scope.certainRecipe = value;

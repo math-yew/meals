@@ -34,14 +34,19 @@ angular.module('meals')
       // });
 
       this.submitRecipe = function(newRecipe) {
-            console.log("ctrl working - recipe");
-        mainService.submitRecipe(newRecipe).then(function (res) {
+        mainService.submitRecipe(newRecipe)
+        .then(function (res) {
           $scope.rec = res;
+          console.log('then 1, clear: ', self.ingredientsList);
+          $scope.newRecipe={};
+          $scope.ingredient={};
+          self.ingredientsList=[];
+          mainService.clearIngredients();
+          console.log('self.ingredientsList: ', self.ingredientsList);
         })
       }
 
       this.updateRecipe = function(newRecipe) {
-            console.log("ctrl working - recipe");
         mainService.updateRecipe(newRecipe).then(function (response) {
           console.log('updated response: ', response);
         })
@@ -50,8 +55,6 @@ angular.module('meals')
       this.addIngredient = function (ingredient) {
         mainService.addIngredient(ingredient);
         self.ingredientsList=mainService.ingredients;
-        console.log('mainService.ingredients: ', mainService.ingredients);
-        console.log('self.ingredientsList: ', self.ingredientsList);
       }
 
       this.ingredientsList = mainService.ingredients;
@@ -64,6 +67,13 @@ angular.module('meals')
         mainService.deleteRecipe(id)
         .then(function(response) {
           console.log('deleted?: ', response);
+        });
+      }
+
+      this.getRecipes = function () {
+        mainService.getRecipes()
+        .then(function(response) {
+          $scope.allRecipes = response.data;
         });
       }
 

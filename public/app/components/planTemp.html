@@ -4,8 +4,6 @@
 <input type="text" placeholder="Untitled List" ng-model="$ctrl.listTitle">
 <div class="paper" ng-repeat="meal in $ctrl.mealList">
   <p class="hand" ng-click="$ctrl.removeMeal(meal)">{{meal[1]}}</p>
-  <br>
-  <br>
 </div>
-  <button type="button" ng-click="$ctrl.makeList($ctrl.mealList, $ctrl.listTitle)"> Make Grocery List</button>
+  <button class="notepad-button" type="button" ng-click="$ctrl.makeList($ctrl.mealList, $ctrl.listTitle)"> Make Grocery List</button>
 </div>
