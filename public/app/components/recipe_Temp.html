@@ -2,9 +2,9 @@
 <div class="search-recipes" style="border-style: solid;">
   <h1>{{$ctrl.certainRecipe[0].rname}}</h1>
   <h3>Ingredients:</h3>
-  <div class="" ng-repeat="ingredient in $ctrl.certainRecipe">
-   -{{ingredient.name}}
-  </div>
+  <ul class="text-left" ng-repeat="ingredient in $ctrl.certainRecipe">
+   <li>{{ingredient.qty}} {{ingredient.measure}} {{ingredient.name}}</li>
+ </ul>
   <h3>Directions:</h3>
   {{$ctrl.certainRecipe[0].directions}}<br>
 </div>

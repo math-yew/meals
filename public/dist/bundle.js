@@ -59,11 +59,12 @@ angular.module('meals')
     .then(function(response) {
       console.log('info: ', info);
       $http.post('/api/users', info)
-      .then(function(response) {
-        self.userTableId = response.data[0].user_id
-        console.log('list of users: ', response);
-        console.log('self.userTableId: ', self.userTableId);
-      });
+    .then(function(response) {
+      self.userTableId = info.owner = response.data[0].user_id
+      localStorage.setItem('recipe-login', JSON.stringify(info));
+      console.log('list of users: ', response);
+      console.log('self.userTableId: ', self.userTableId);
+    });
     });
   }
 
@@ -111,7 +112,7 @@ angular.module('meals')
     ingredientArr.push(ingredient.measurement);
     ingredientArr.push(ingredient.name);
     ingredients.push(ingredientArr);
-    console.log('ingredients: ', ingredients);
+    console.log('ingredientz: ', ingredients, self.ingredients);
     self.ingredients=ingredients;
   }
 
@@ -136,7 +137,26 @@ angular.module('meals')
       ingredients.push(ingredientArr);
     }
     console.log('refreshed ingredients: ', ingredients);
+    var userInfo = JSON.parse(localStorage.getItem('recipe-login')) || [];
+    self.userTableId = userInfo.owner
+    self.userId = userInfo.id
+    self.userName = userInfo.name
+    console.log('self.userId, self.userName: ', self.userId, self.userName);
     return ingredients;
+  }
+
+  this.refreshUserInfo = function(){
+    var userInfo = JSON.parse(localStorage.getItem('recipe-login')) || [];
+    self.userTableId = userInfo.owner
+    self.userId = userInfo.id
+    self.userName = userInfo.name
+  }
+
+  this.clearIngredients = function(){
+    var ingredients = [];
+    self.ingredients = [];
+    this.ingredients = [];
+    console.log('clear service: ', ingredients, self.ingredients);
   }
 
   this.ingredients = ingredients;
@@ -150,9 +170,9 @@ angular.module('meals')
     console.log('newRecipe: ', newRecipe);
     return $http.post('/api/recipes', newRecipe)
     .then(function (res) {
+      self.clearIngredients();
       console.log('res: ', res);
       ingr.recipeId = res.data[0].recipe_id;
-      console.log('res: ', ingr);
       if(ingr.recipeId > 0){
         $http.post('/api/ingredients/' + ingr.recipeId, ingr);
       }
@@ -218,7 +238,7 @@ angular.module('meals')
 
       this.refreshIt = function () {
         if(this.update==='true'){
-          console.log('update?');
+          console.log('update?',this.newRecipe);
           this.newRecipe=$rootScope.certainRecipe[0];
           this.ingredientsList=mainService.refreshIngredients($rootScope.certainRecipe);
           // this.ingredientsList = mainService.ingredients;
@@ -237,14 +257,25 @@ angular.module('meals')
       // });
 
       this.submitRecipe = function(newRecipe) {
-            console.log("ctrl working - recipe");
-        mainService.submitRecipe(newRecipe).then(function (res) {
+        newRecipe.name=newRecipe.rname;
+        mainService.submitRecipe(newRecipe)
+        .then(function (res) {
           $scope.rec = res;
+          self.cleanSlate();
         })
       }
 
+      this.cleanSlate = function(){
+        console.log('then 1, clear: ', self.ingredientsList);
+        $scope.newRecipe={};
+        $scope.ingredient={};
+        self.ingredientsList=[];
+        mainService.clearIngredients();
+        console.log('self.ingredientsList: ', self.ingredientsList);
+      }
+
       this.updateRecipe = function(newRecipe) {
-            console.log("ctrl working - recipe");
+        newRecipe.name=newRecipe.rname;
         mainService.updateRecipe(newRecipe).then(function (response) {
           console.log('updated response: ', response);
         })
@@ -253,8 +284,6 @@ angular.module('meals')
       this.addIngredient = function (ingredient) {
         mainService.addIngredient(ingredient);
         self.ingredientsList=mainService.ingredients;
-        console.log('mainService.ingredients: ', mainService.ingredients);
-        console.log('self.ingredientsList: ', self.ingredientsList);
       }
 
       this.ingredientsList = mainService.ingredients;
@@ -267,6 +296,14 @@ angular.module('meals')
         mainService.deleteRecipe(id)
         .then(function(response) {
           console.log('deleted?: ', response);
+          self.cleanSlate();
+        });
+      }
+
+      this.getRecipes = function () {
+        mainService.getRecipes()
+        .then(function(response) {
+          $scope.allRecipes = response.data;
         });
       }
 
@@ -374,23 +411,23 @@ angular.module("meals").directive('homeAni', function() {
         });
 
         $('.counter').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 8 * fasterX + 'px) translateY(' + (event.pageY-totHeight/2) / 6.5 * fasterY  + 'px) scale(1.3, 1.3)'
+          'transform':'translateX(' + -(event.pageX-totWidth/2) / 8 * fasterX + 'px) translateY(' + -(event.pageY-totHeight/2) / 6.5 * fasterY  + 'px) scale(1.3, 1.3)'
         });
 
         $('.chandelier').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 8.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 2.5 * fasterY + 'px) scale(1.3, 1.3)'
+          'transform':'translateX(' + -(event.pageX-totWidth/2) / 8.5 * fasterX  + 'px) translateY(' + -(event.pageY-totHeight/2) / 2.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
         $('.fridge').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 10.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 10.5 * fasterY + 'px) scale(1.3, 1.3)'
+          'transform':'translateX(' + -(event.pageX-totWidth/2) / 10.5 * fasterX  + 'px) translateY(' + -(event.pageY-totHeight/2) / 10.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
         $('.grass').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 11.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 11.5 * fasterY + 'px) scale(1.3, 1.3)'
+          'transform':'translateX(' + -(event.pageX-totWidth/2) / 11.5 * fasterX  + 'px) translateY(' + -(event.pageY-totHeight/2) / 11.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
         $('.blurred').css({
-          'transform':'translateX(' + (event.pageX-totWidth/2) / 9.5 * fasterX  + 'px) translateY(' + (event.pageY-totHeight/2) / 9.5 * fasterY + 'px) scale(1.3, 1.3)'
+          'transform':'translateX(' + -(event.pageX-totWidth/2) / 9.5 * fasterX  + 'px) translateY(' + -(event.pageY-totHeight/2) / 9.5 * fasterY + 'px) scale(1.3, 1.3)'
         });
 
       });
@@ -419,10 +456,11 @@ angular.module("meals").directive('recAni', function() {
         $('.book-cover').css({'transform':'rotateY(180deg) rotateZ(-15deg) skew(-15deg,-15deg)'});
         $('.book-cover').css('background-color','grey');
         $('.book-cover').css('border-style','thick');
-        $('.new-page').css({'transform-origin' :'25% 25%'});
+        // $('.new-page').css({'transform-origin' :'25% 25%'});
+        $('.tab').css({'transform':'translateY(-40px)'});
       });
 
-      $('.new-page-corner').on('click', function () {
+      $('.tab').on('click', function () {
         $('.new-page').css('z-index','14');
         $('.new-page').css({'transform':'rotate(0deg) scale(1, 1)'});
         $('.new-page').css({'transform-origin' :'50% 50%'});
@@ -430,8 +468,8 @@ angular.module("meals").directive('recAni', function() {
 
       $('#cancel-edit').on('click', function () {
         $('.new-page').css('z-index','0');
-        $('.new-page').css({'transform':'rotate(-5deg) scale(.91, .91)'});
-        $('.new-page').css({'transform-origin' :'30% 30%'});
+        $('.new-page').css({'transform':'rotate(-5deg) scale(.8, .8)'});
+        $('.new-page').css({'transform-origin' :'50% 50%'});
       });
 
       $('#go-back').on('click', function () {
@@ -559,11 +597,11 @@ angular.module('meals')
 
 angular.module('meals')
 .controller('recipesCtrl', ["$scope", "mainService", "$rootScope", function ($scope, mainService, $rootScope) {
-
+  mainService.refreshUserInfo();
+  var userInfo = JSON.parse(localStorage.getItem('recipe-login')) || [];
   $scope.flipped = true;
-
-  $scope.userId = mainService.userId;
-  $scope.userName = mainService.userName;
+  $scope.userId = userInfo.id
+  $scope.userName = userInfo.name
 
   $rootScope.$watch("certainRecipe", function (value) {
     $scope.certainRecipe = value;

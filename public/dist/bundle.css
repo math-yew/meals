@@ -40,7 +40,8 @@ p {
   text-shadow: 1px 1px 3px darkgreen;
   background-color: green;
   border: 1px solid green;
-  color: white; }
+  color: white;
+  cursor: pointer; }
 
 .input-style:hover, button:hover {
   color: darkgreen;
@@ -142,7 +143,8 @@ input {
   background-attachment: fixed;
   position: absolute;
   background-position: center;
-  display: inline-block; }
+  display: inline-block;
+  transition: 3.5s; }
 
 .grass {
   background: url("../app/css/images/grass.png") center center no-repeat;
@@ -238,6 +240,9 @@ input {
   margin: 0px;
   padding: 0px; }
 
+.notepad-button {
+  margin: 10px 0; }
+
 .user-info {
   width: 100%;
   text-align: right;
@@ -258,7 +263,8 @@ input {
   border-radius: 5px 15px 15px 5px;
   border: solid thin grey;
   text-align: center;
-  display: inline-block; }
+  display: inline-block;
+  cursor: pointer; }
 
 .centered {
   vertical-align: middle;
@@ -272,7 +278,9 @@ input {
 
 .boxed {
   border: solid thin;
-  box-shadow: 0px 0px 55px 55px #009700; }
+  box-shadow: 0px 0px 5px 5px #1ec71e;
+  padding: 0 10px;
+  background-color: #d2f8d2; }
 
 .print {
   position: fixed;
@@ -280,16 +288,41 @@ input {
   right: 10%; }
 
 .new-page {
-  transform: rotate(-5deg) scale(0.91, 0.91);
+  transform: rotate(-5deg) scale(0.8, 0.8);
   transform-origin: 50% 50%;
-  transition: 3s;
+  transition: 2s;
   z-index: 0; }
 
 .directions {
   height: 150px;
   width: 400px;
   text-align: left;
-  vertical-align: text-top; }
+  display: inline-block;
+  font-size: 15px; }
+
+.clear {
+  float: left; }
+
+.text-left {
+  text-align: left;
+  margin-left: 15px; }
+
+.pointer {
+  cursor: pointer; }
+
+.tab {
+  position: absolute;
+  left: 80%;
+  top: 40px;
+  width: 120px;
+  height: 50px;
+  padding: 5px;
+  background-color: #b7b7b7;
+  color: white;
+  z-index: -20;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transition: 2s; }
 
 @media (max-width: 900px) {
   .triangle, .tri-a, .tri-b {
@@ -311,4 +344,7 @@ input {
     line-height: 100px;
     white-space: nowrap;
     font-size: 20px;
-    font-family: Cardo; } }
+    font-family: Cardo; }
+  .clear {
+    float: none;
+    clear: both; } }

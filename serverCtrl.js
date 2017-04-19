@@ -52,17 +52,11 @@ module.exports = {
   },
 
   getRecipe: function (req, res) {
-    console.log('object received by server: ', req.params.id);
     db.get_recipe([req.params.id], function (err, results) {
       if(err){
         console.error(err);
         return res.send(err);
       }
-      console.log('get recipe fired', results);
-      // if(results.length === 0){
-      //   return res.status(404).send("Can't Find Recipe");
-      // }
-      // return res.send(results);
       return res.send(results);
     })
   },

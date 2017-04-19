@@ -16,11 +16,12 @@ angular.module('meals')
     .then(function(response) {
       console.log('info: ', info);
       $http.post('/api/users', info)
-      .then(function(response) {
-        self.userTableId = response.data[0].user_id
-        console.log('list of users: ', response);
-        console.log('self.userTableId: ', self.userTableId);
-      });
+    .then(function(response) {
+      self.userTableId = info.owner = response.data[0].user_id
+      localStorage.setItem('recipe-login', JSON.stringify(info));
+      console.log('list of users: ', response);
+      console.log('self.userTableId: ', self.userTableId);
+    });
     });
   }
 
@@ -68,7 +69,7 @@ angular.module('meals')
     ingredientArr.push(ingredient.measurement);
     ingredientArr.push(ingredient.name);
     ingredients.push(ingredientArr);
-    console.log('ingredients: ', ingredients);
+    console.log('ingredientz: ', ingredients, self.ingredients);
     self.ingredients=ingredients;
   }
 
@@ -93,7 +94,26 @@ angular.module('meals')
       ingredients.push(ingredientArr);
     }
     console.log('refreshed ingredients: ', ingredients);
+    var userInfo = JSON.parse(localStorage.getItem('recipe-login')) || [];
+    self.userTableId = userInfo.owner
+    self.userId = userInfo.id
+    self.userName = userInfo.name
+    console.log('self.userId, self.userName: ', self.userId, self.userName);
     return ingredients;
+  }
+
+  this.refreshUserInfo = function(){
+    var userInfo = JSON.parse(localStorage.getItem('recipe-login')) || [];
+    self.userTableId = userInfo.owner
+    self.userId = userInfo.id
+    self.userName = userInfo.name
+  }
+
+  this.clearIngredients = function(){
+    var ingredients = [];
+    self.ingredients = [];
+    this.ingredients = [];
+    console.log('clear service: ', ingredients, self.ingredients);
   }
 
   this.ingredients = ingredients;
@@ -107,9 +127,9 @@ angular.module('meals')
     console.log('newRecipe: ', newRecipe);
     return $http.post('/api/recipes', newRecipe)
     .then(function (res) {
+      self.clearIngredients();
       console.log('res: ', res);
       ingr.recipeId = res.data[0].recipe_id;
-      console.log('res: ', ingr);
       if(ingr.recipeId > 0){
         $http.post('/api/ingredients/' + ingr.recipeId, ingr);
       }
