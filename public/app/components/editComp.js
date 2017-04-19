@@ -15,7 +15,7 @@ angular.module('meals')
 
       this.refreshIt = function () {
         if(this.update==='true'){
-          console.log('update?');
+          console.log('update?',this.newRecipe);
           this.newRecipe=$rootScope.certainRecipe[0];
           this.ingredientsList=mainService.refreshIngredients($rootScope.certainRecipe);
           // this.ingredientsList = mainService.ingredients;
@@ -34,19 +34,25 @@ angular.module('meals')
       // });
 
       this.submitRecipe = function(newRecipe) {
+        newRecipe.name=newRecipe.rname;
         mainService.submitRecipe(newRecipe)
         .then(function (res) {
           $scope.rec = res;
-          console.log('then 1, clear: ', self.ingredientsList);
-          $scope.newRecipe={};
-          $scope.ingredient={};
-          self.ingredientsList=[];
-          mainService.clearIngredients();
-          console.log('self.ingredientsList: ', self.ingredientsList);
+          self.cleanSlate();
         })
       }
 
+      this.cleanSlate = function(){
+        console.log('then 1, clear: ', self.ingredientsList);
+        $scope.newRecipe={};
+        $scope.ingredient={};
+        self.ingredientsList=[];
+        mainService.clearIngredients();
+        console.log('self.ingredientsList: ', self.ingredientsList);
+      }
+
       this.updateRecipe = function(newRecipe) {
+        newRecipe.name=newRecipe.rname;
         mainService.updateRecipe(newRecipe).then(function (response) {
           console.log('updated response: ', response);
         })
@@ -67,6 +73,7 @@ angular.module('meals')
         mainService.deleteRecipe(id)
         .then(function(response) {
           console.log('deleted?: ', response);
+          self.cleanSlate();
         });
       }
 

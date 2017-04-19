@@ -40,7 +40,8 @@ p {
   text-shadow: 1px 1px 3px darkgreen;
   background-color: green;
   border: 1px solid green;
-  color: white; }
+  color: white;
+  cursor: pointer; }
 
 .input-style:hover, button:hover {
   color: darkgreen;
@@ -262,7 +263,8 @@ input {
   border-radius: 5px 15px 15px 5px;
   border: solid thin grey;
   text-align: center;
-  display: inline-block; }
+  display: inline-block;
+  cursor: pointer; }
 
 .centered {
   vertical-align: middle;
@@ -276,7 +278,7 @@ input {
 
 .boxed {
   border: solid thin;
-  box-shadow: 0px 0px 5px 5px #00ca00;
+  box-shadow: 0px 0px 5px 5px #1ec71e;
   padding: 0 10px;
   background-color: #d2f8d2; }
 
@@ -286,9 +288,9 @@ input {
   right: 10%; }
 
 .new-page {
-  transform: rotate(-5deg) scale(0.91, 0.91);
+  transform: rotate(-5deg) scale(0.8, 0.8);
   transform-origin: 50% 50%;
-  transition: 3s;
+  transition: 2s;
   z-index: 0; }
 
 .directions {
@@ -304,6 +306,23 @@ input {
 .text-left {
   text-align: left;
   margin-left: 15px; }
+
+.pointer {
+  cursor: pointer; }
+
+.tab {
+  position: absolute;
+  left: 80%;
+  top: 40px;
+  width: 120px;
+  height: 50px;
+  padding: 5px;
+  background-color: #b7b7b7;
+  color: white;
+  z-index: -20;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transition: 2s; }
 
 @media (max-width: 900px) {
   .triangle, .tri-a, .tri-b {

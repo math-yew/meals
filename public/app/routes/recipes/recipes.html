@@ -3,7 +3,7 @@
 </div>
 
 <div class="book" rec-ani>
-  <div class="book-cover shadow cat" ng-click="getRecipes()">
+  <div class="book-cover pointer shadow cat" ng-click="getRecipes()">
     <div class="centered">
       <br>
       <h1 class="boxed">My Recipes</h1>
@@ -20,7 +20,7 @@
   </div>
 
   <div class="page new-page">
-    <p style="text-align: right" class='new-page-corner'>Add Recipe</p>
+    <p style="text-align: right" class='new-page-corner pointer'>Add Recipe</p>
     <edit-recipe></edit-recipe>
   </div>
 
@@ -31,6 +31,8 @@
     <single-recipe certain-recipe="certainRecipe" ng-show="flipped"></single-recipe>
     <edit-recipe update="true"  certain-recipe="certainRecipe" ng-hide="flipped"></edit-recipe>
   </div>
+
+  <div class="tab">New Recipe</div>
 </div>
 
 <div class="right-side" rec-ani>

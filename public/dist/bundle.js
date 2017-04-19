@@ -238,7 +238,7 @@ angular.module('meals')
 
       this.refreshIt = function () {
         if(this.update==='true'){
-          console.log('update?');
+          console.log('update?',this.newRecipe);
           this.newRecipe=$rootScope.certainRecipe[0];
           this.ingredientsList=mainService.refreshIngredients($rootScope.certainRecipe);
           // this.ingredientsList = mainService.ingredients;
@@ -257,19 +257,25 @@ angular.module('meals')
       // });
 
       this.submitRecipe = function(newRecipe) {
+        newRecipe.name=newRecipe.rname;
         mainService.submitRecipe(newRecipe)
         .then(function (res) {
           $scope.rec = res;
-          console.log('then 1, clear: ', self.ingredientsList);
-          $scope.newRecipe={};
-          $scope.ingredient={};
-          self.ingredientsList=[];
-          mainService.clearIngredients();
-          console.log('self.ingredientsList: ', self.ingredientsList);
+          self.cleanSlate();
         })
       }
 
+      this.cleanSlate = function(){
+        console.log('then 1, clear: ', self.ingredientsList);
+        $scope.newRecipe={};
+        $scope.ingredient={};
+        self.ingredientsList=[];
+        mainService.clearIngredients();
+        console.log('self.ingredientsList: ', self.ingredientsList);
+      }
+
       this.updateRecipe = function(newRecipe) {
+        newRecipe.name=newRecipe.rname;
         mainService.updateRecipe(newRecipe).then(function (response) {
           console.log('updated response: ', response);
         })
@@ -290,6 +296,7 @@ angular.module('meals')
         mainService.deleteRecipe(id)
         .then(function(response) {
           console.log('deleted?: ', response);
+          self.cleanSlate();
         });
       }
 
@@ -449,10 +456,11 @@ angular.module("meals").directive('recAni', function() {
         $('.book-cover').css({'transform':'rotateY(180deg) rotateZ(-15deg) skew(-15deg,-15deg)'});
         $('.book-cover').css('background-color','grey');
         $('.book-cover').css('border-style','thick');
-        $('.new-page').css({'transform-origin' :'25% 25%'});
+        // $('.new-page').css({'transform-origin' :'25% 25%'});
+        $('.tab').css({'transform':'translateY(-40px)'});
       });
 
-      $('.new-page-corner').on('click', function () {
+      $('.tab').on('click', function () {
         $('.new-page').css('z-index','14');
         $('.new-page').css({'transform':'rotate(0deg) scale(1, 1)'});
         $('.new-page').css({'transform-origin' :'50% 50%'});
@@ -460,8 +468,8 @@ angular.module("meals").directive('recAni', function() {
 
       $('#cancel-edit').on('click', function () {
         $('.new-page').css('z-index','0');
-        $('.new-page').css({'transform':'rotate(-5deg) scale(.91, .91)'});
-        $('.new-page').css({'transform-origin' :'30% 30%'});
+        $('.new-page').css({'transform':'rotate(-5deg) scale(.8, .8)'});
+        $('.new-page').css({'transform-origin' :'50% 50%'});
       });
 
       $('#go-back').on('click', function () {
@@ -510,12 +518,6 @@ angular.module("meals").directive('recAni', function() {
 //
 // }
 // ,1000)
-
-angular.module('meals')
-.controller('homeCtrl', ["$scope", "mainService", function ($scope, mainService) {
-
-
-}])
 
 angular.module('meals')
 .controller('groceryCtrl', ["$scope", "mainService", function ($scope, mainService) {
@@ -588,19 +590,9 @@ $scope.print = function () {
 }])
 
 angular.module('meals')
-.controller('welcomeCtrl', ["$scope", "mainService", "$state", function ($scope, mainService, $state) {
+.controller('homeCtrl', ["$scope", "mainService", function ($scope, mainService) {
 
-  $scope.login  = function () {
-    console.log('before');
-        mainService.login().then(function (response) {
-          $scope.logInfo = response;
-          console.log('auth0 in ctrl: ', response);
-        }).then(function(response) {
-          $state.go('recipes');
-        });
-    }
 
-  $scope.login();  
 }])
 
 angular.module('meals')
@@ -636,4 +628,20 @@ angular.module('meals')
 
 
 
+}])
+
+angular.module('meals')
+.controller('welcomeCtrl', ["$scope", "mainService", "$state", function ($scope, mainService, $state) {
+
+  $scope.login  = function () {
+    console.log('before');
+        mainService.login().then(function (response) {
+          $scope.logInfo = response;
+          console.log('auth0 in ctrl: ', response);
+        }).then(function(response) {
+          $state.go('recipes');
+        });
+    }
+
+  $scope.login();  
 }])
