@@ -52,6 +52,7 @@ module.exports = {
   },
 
   getRecipe: function (req, res) {
+    console.log("getRecipe");
     db.get_recipe([req.params.id], function (err, results) {
       if(err){
         console.error(err);
